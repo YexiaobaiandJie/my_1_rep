@@ -1,46 +1,20 @@
 <template>
   <div class="content2">
-      <!--
-       <button class="row-action">
-          <image class="row-action-image" mode="aspectFit" src="../assets/index-records.png"></image>
-          
-          <div class="row-action-content">
-            <div class="row-action-title">收到的硬币</div>
-            <div class="row-action-text">来自朋友的馈赠</div>
-          </div>
-        </button>
-        <button class="row-action" >
-          <image class="row-action-image" mode="aspectFit" src="../assets/index-gift.png"></image>
-          
-          <image class="row-action-image" src="../asserts/index-gift.png"/>
-          <div class="row-action-content">
-            <div class="row-action-title">送出的硬币</div>
-            <div class="row-action-text">给朋友的祝福</div>
-          </div>
-        </button>
-        <div class="form">
-            <div >
-             <button class="form-row">我要发幸运硬币</button>
-            </div>
-            <div >
-             <button class="form-row" >我的余额账户</button>
-            </div>
-        </div> 
-        -->
+     
         
           <button class="btn1">
               <image class="imgc" src="./assets/logo.png"/>
               <div class="zm">
-                  <div class="zm1">收到的硬币</div>
-                  <div class="zm2">来自朋友的馈赠</div>
+                  <div class="zm1">{{reccoin}}</div>
+                  <div class="zm2">{{fromf}}</div>
               </div>
           </button>   
           <br/>
           <button class="btn1">
               <image class="imgc" src="./assets/logo.png"/>
               <div class="zm">
-                  <div class="zm1">送出的硬币</div>
-                  <div class="zm2">给朋友的祝福</div>
+                  <div class="zm1">{{sendcoin}}</div>
+                  <div class="zm2">{{tof}}</div>
               </div>
           </button> 
         
@@ -48,10 +22,10 @@
         
           <div >
              <button class="btn2">我要发幸运硬币</button>
-            </div>
-            <div >
-             <button class="btn3" >我的余额账户</button>
-            </div>
+          </div>
+          <div >
+            <button class="btn3" >我的余额账户</button>
+          </div>
         
 
         
@@ -66,7 +40,10 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      
+      reccoin:'收到的硬币',
+      fromf:'来自朋友的馈赠',
+      sendcoin:'送出的硬币',
+      tof:'给朋友的祝福'
     }
   }
 }
