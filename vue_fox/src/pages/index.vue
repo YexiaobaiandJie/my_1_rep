@@ -21,10 +21,10 @@
 
         
           <div >
-             <button class="btn2">我要发幸运硬币</button>
+             <button class="btn2">{{iwant}}</button>
           </div>
           <div >
-            <button class="btn3" >我的余额账户</button>
+            <button class="btn3" >{{mycount}}</button>
           </div>
         
 
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import asserts from './assets'
 export default {
  // name: 'HelloWorld',
   data () {
@@ -43,7 +44,9 @@ export default {
       reccoin:'收到的硬币',
       fromf:'来自朋友的馈赠',
       sendcoin:'送出的硬币',
-      tof:'给朋友的祝福'
+      tof:'给朋友的祝福',
+      iwant:'我要发幸运硬币',
+      mycount:'我的余额账户'
     }
   }
 }
