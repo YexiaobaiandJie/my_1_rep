@@ -1,10 +1,11 @@
 <template>
 <div class="container">
-    <!--
+    
     <div class="content">
-        <div class="owner-info">{{ownername}} 的 {{coinnumber}} 硬币</div> 
+        
+        <div class="owner-info">{{redPacket.owner.fullname}} 的 {{coinid}} 硬币</div> 
         <div class="bubble">{{redPacket.message}}</div>
-        -->
+        
         <!--
         <div v-if="isExpired && record === null" class="slow-hint">
             硬币过期了，下手得早点儿
@@ -64,52 +65,26 @@
                 </div>
                 
             </div>
-        </div>
+        </div>-->
     </div>
-    
-    <div class="back" v-bind:class="{'open':isOpen}" style="height:{{backHeight}}px">
-        <div class="back-inner">
-            <div class="back-border"></div>
-            <div class="back-copyright"></div>
-            
-            <image class="back-img" mode="aspectFill" src="../assets/cover-back-img@2x.jpg" />
-        </div>
-    </div>
-    
-    
-    <div class="cover" v-bind:class="{'open':isOpen}" style="height: {{coverHeight}}px">
-        <div class="cover-inner">
-            <image class="cover-img" src="../assets/cover-front-img@2x.png" />
-            <div v-if="!isOpen" class="cover-summary">
-               
-            </div>
-            <div class="open-view">
-                <div v-if="isOpen" class="open-avatar">
-                    <image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />
-                </div>
-                <button v-else class="open-button" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">
-                    <image mode="aspectFit" src="../assets/open-button-label-img@2x.png" /> 
-                </button>
-            </div>
-        </div>
-    </div>
-    -->
 
     <div class="back" v-bind:class="{'open':isOpen}" style="height:100%">
         <div class="back-inner">
             <div class="back-border"></div>
            <img class="back-img"  src="../assets/cover-back-img@2x.png" />
-            
+            <!--<div v-if="!isOpen" class="cover-summary">-->
         </div>
     </div>
     
     <div class="cover" v-bind:class="{'open':isOpen}" style="height:63%">
         <div class="cover-inner">
             <img class="cover-img" src="../assets/cover-front-img@2x.png" />
-            
+            <div v-if="!isOpen" class="cover-summary">
+                <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
+            </div>
             <div class="open-view">
                 <div v-if="isOpen" class="open-avatar">
-                   
+                   <!--这个可能是接收头像<image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />-->
                 </div>
                 <button v-else class="open-button">
                     <img src="../assets/open-button-label-img@2x.png" />
@@ -147,10 +122,13 @@ export default {
     */
     data () {
       return {
-            ownername:'helijie',
-            coinnumber:'7',
+            senderName:'helijie',
+            unit:'Q',
             isOpen: false,
-            coverHeight: 1000,
+            coverHeight: '1000',
+            redPacket_message:'这里是红包信息',
+            isExpired:false,  //是否过期
+            isAvailable:true, //是否被抢光
             pickResult: [
             {
          // avatarUrl:,
@@ -189,6 +167,12 @@ export default {
 
 
 <style scoped>
+    page {
+        background: #FF6B49;
+    }
+    .container {
+        background: #FFF;
+    } 
     .cover {
         position: absolute;
         top:0;
@@ -248,14 +232,16 @@ export default {
       .open-button, .open-avatar {
         background: #FFEFBE;
         border-radius: 99em;
-        height: 125px;
-        width: 125px;
+        height: 130%;
+        width: 130%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 50px;
+        border:10px solid #FFD244;
         box-shadow: 0 1px 2px 0 rgba(172,105,18,0.50);
       }
+      
       .open-avatar-img {
         border-radius: 99em;
         height: 100%;
@@ -300,7 +286,37 @@ export default {
     .back.open {
     transition: height 0.3s ease;
     }
-
+    .bubble {
+        border-radius:8px;
+        margin: 2px auto 10px auto;
+        text-align: center;
+        font-size: 14px;
+        padding: 4px 8px;
+        background:#eee;
+        color: #888;
+        max-width:300px;
+        display: inline-block;
+        position: relative;
+    }
+    .owner-info {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .container.closed {
+        overflow: hidden;
+    }
+    .content {
+        padding: 170px 0 100px 0;
+        width:100%;
+        opacity: 1;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .content.open {
+        opacity: 1;
+    }
 
 /*
   page {
