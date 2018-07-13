@@ -24,8 +24,70 @@
           </div>
   </div>
 -->
-<div>
-
+<div class="container">
+    <div class="content">
+        <div class="owner-info">{{redPacket.owner.fullname}} 的 {{unit}} 硬币</div> 
+        <div class="bubble">{{redPacket.message}}</div>
+        <div v-if="isExpired && record === null" class="slow-hint">
+            硬币过期了，下手得早点儿
+        </div>   
+        <div v-else-if="!isAvailable && record === null" class="slow-hint">
+            硬币被抢光了，下手得再快点
+        </div>  
+        <div v-else>
+            <div class="balance-block" v-if="record">
+              <!--  <balance-view :amount.sync="amountValue" :unit.sync="unit" :priceUsd.sync="priceUsd" text=""></balance-view>
+                -->
+            </div>
+        </div>
+        <!--如果是新用户-->
+        <div v-if="!isNewUser" class="button-wrapper">
+            <!--给他一个查看余额的按钮-->
+            <button @tap.user="tapBalanceButton">查看余额</button>
+        </div>
+        <div v-if="isNewUser">
+            <!--也给一个查看领取记录的按钮-->
+            <button v-if="isNewUser" class="login-to-view-button" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfoToView">
+                 登录查看领取记录
+            </button>
+        </div>
+        <!--如果不是新用户-->
+        <div v-else>
+            <!--直接显示红包领取结果-->
+            <div v-if="redPacket" class="result-list-meta">
+                <!--如果红包还有剩余，则显示抢到了-->
+                <div v-if="redPacket.number !== 0">
+                    共{{redPacket.total}}个，已领取{{redPacket.total-redPacket.number}}个
+                </div>
+                <!--如果没有剩余，则没抢到-->
+                <div v-else>
+                    硬币已抢光，用时{{during}}
+                </div>
+            </div>
+            <!--展示抢红包结果列表-->
+            <div class="result-list">
+                <!--使用索引和循环输出结果列表-->
+                <div class="result-item">
+                    <ul>
+                        <li v-bind:v-for="result in pickResult">  <!--&&&&&&&&&&这里注意一下&&&&&&&&&&&-->
+                            <!--这里是相关样式-->
+                            <image class="result-item-avatar" src="{{result.avatarUrl}}" />  <!--这里放一张不知道哪来的图片，大概是头像啥的，循环的-->
+                            <div class="result-item-left">
+                                <div class="result-item-name">{{result.nickName}}</div><!--这里是列表里的用户名-->
+                                <div class="result-item-time">{{result.time}}</div>   <!--这里是抢红包的时间-->
+                            </div>
+                            <div class="result-item-right">
+                                <div class="result-item-amount">{{result.amount}} {{unit}}</div><!--这里应该放该用户抢到了多少-->
+                                <div wx:if="{{result.bestLuck}}" class="result-item-best-luck">👑 手气最佳</div><!--如果他满足最幸运的条件，给他一个称号-->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--这里似乎是未点击打开红包所呈现的界面，就是打开链接一开始可以看到的-->
+    
 </div>
 </template>
 
@@ -35,6 +97,7 @@ export default {
  // name: 'HelloWorld',
   data () {
     return {
+    /*
       msg: 'Welcome to Your Vue.js App',
       reccoin:'收到的硬币',
       fromf:'来自朋友的馈赠',
@@ -42,6 +105,15 @@ export default {
       tof:'给朋友的祝福',
       iwant:'我要发幸运硬币',
       mycount:'我的余额账户'
+      */
+      pickResult: [
+      {
+         // avatarUrl:,
+          nickName:'Tom',
+          time:'2018-7-12 12:10:27',
+          amount:'1',
+
+      }]
     }
   }
 }
@@ -94,15 +166,6 @@ height:50px;
     text-align: center;
     margin-top:30px;
 }
-.row-action {
-    display: flex;
-    
-    border-radius: 8px;
-    background: #fff;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
     .row-action-image {
       flex-basis: 70px;
       height: 70px;
@@ -142,4 +205,9 @@ height:50px;
        
     }
   */
+
+
+
+
+
 </style>
