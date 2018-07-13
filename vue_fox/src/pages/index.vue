@@ -1,7 +1,6 @@
 <template>
+<!-- 首页界面
   <div class="content2">
-     
-        
           <button class="btn1">
               <image class="imgc" src="./assets/logo.png"/>
               <div class="zm">
@@ -11,31 +10,27 @@
           </button>   
           <br/>
           <button class="btn1">
-              <image class="imgc" src="./assets/logo.png"/>
+              <image class="imgc" src="../assets/logo.png"/>
               <div class="zm">
                   <div class="zm1">{{sendcoin}}</div>
                   <div class="zm2">{{tof}}</div>
               </div>
           </button> 
-        
-
-        
           <div >
              <button class="btn2">{{iwant}}</button>
           </div>
           <div >
             <button class="btn3" >{{mycount}}</button>
           </div>
-        
-
-        
   </div>
+-->
+<div>
 
-  
+</div>
 </template>
 
 <script>
-import asserts from './assets'
+
 export default {
  // name: 'HelloWorld',
   data () {
@@ -54,7 +49,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-
+/*
 .btn1{
     background-color:#fff;
     margin:20px;
@@ -94,30 +89,6 @@ height:50px;
     font-size:20px;
     margin:3px;
 }
-.zm2{
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .content2{
     text-align: center;
@@ -125,7 +96,7 @@ height:50px;
 }
 .row-action {
     display: flex;
-    /*align-items: center;*/
+    
     border-radius: 8px;
     background: #fff;
     padding: 10px 20px;
@@ -143,7 +114,7 @@ height:50px;
       text-align: left;
       display: flex;
       flex-direction: column;
-     /* flex: 1;*/
+    
     }
     .row-action-title {
       font-size: 20px;
@@ -161,15 +132,14 @@ height:50px;
         height:30px;
        
         background: #fff;
-       /* display: flex;*/
+      
         align-items: center;
         
-       /* margin-bottom: 10px;*/
-        /*padding: 10px 20px;*/
+       
         
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         border-radius: 8px;
        
     }
-  
+  */
 </style>
