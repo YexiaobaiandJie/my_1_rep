@@ -24,9 +24,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 .body{
-    background:#f1f1f1;
+    sbackground:#f1f1f1;
+    
+      
 }
 .header{
+    max-width:442px;
     width:100%;
     height:50px;
     background-color: #ff4500;
@@ -34,12 +37,20 @@ export default {
     line-height: 50px;
     color:#fff;
 }
+.content{
+    color:#fff;
+    max-width:442px;
+    height:400px;
+    width:100%;
+}
 .footer{
+    max-width:442px;
     width:100%;
     height:50px;
     background-color:#cfcfcf;
     text-align: center;
-    line-height:50px;;
+    line-height:50px;
+    margin-top:230px;
 }
   
 </style>

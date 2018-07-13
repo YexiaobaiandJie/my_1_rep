@@ -3,8 +3,9 @@
     
     <div class="content">
         
-        <div class="owner-info">{{redPacket.owner.fullname}} 的 {{coinid}} 硬币</div> 
-        <div class="bubble">{{redPacket.message}}</div>
+        <div class="owner-info">{{redPacket_owner_fullname}} 的 {{coinid}} 硬币</div> 
+        <div class="bubble">{{redPacket_message}}</div>
+        
         
         <!--
         <div v-if="isExpired && record === null" class="slow-hint">
@@ -68,15 +69,18 @@
         </div>-->
     </div>
 
-    <div class="back" v-bind:class="{'open':isOpen}" style="height:100%">
-        <div class="back-inner">
-            <div class="back-border"></div>
-           <img class="back-img"  src="../assets/cover-back-img@2x.png" />
-            <!--<div v-if="!isOpen" class="cover-summary">-->
+    <transition>
+        <div class="back" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:100%">
+            <div class="back-inner">
+                <div class="back-border"></div>
+            <img class="back-img"  src="../assets/cover-back-img@2x.png" />
+                <!--<div v-if="!isOpen" class="cover-summary">-->
+            </div>
         </div>
-    </div>
-    
-    <div class="cover" v-bind:class="{'open':isOpen}" style="height:63%">
+    </transition>
+
+    <transition>
+    <div class="cover" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:80%">
         <div class="cover-inner">
             <img class="cover-img" src="../assets/cover-front-img@2x.png" />
             <div v-if="!isOpen" class="cover-summary">
@@ -86,13 +90,13 @@
                 <div v-if="isOpen" class="open-avatar">
                    <!--这个可能是接收头像<image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />-->
                 </div>
-                <button v-else class="open-button">
+                <button v-else class="open-button" v-on:click="openRedPacket(message)">
                     <img src="../assets/open-button-label-img@2x.png" />
                 </button>
             </div>
         </div>
     </div>
-    
+    </transition>
     
 </div>
 </template>
@@ -123,11 +127,13 @@ export default {
     data () {
       return {
             senderName:'helijie',
+            redPacket_owner_fullname:'redpacket_owner',
+            coinid:'QB',
             unit:'Q',
             isOpen: false,
             coverHeight: '1000',
             redPacket_message:'这里是红包信息',
-            isExpired:false,  //是否过期
+            isExpired:true,  //是否过期
             isAvailable:true, //是否被抢光
             pickResult: [
             {
@@ -161,12 +167,19 @@ export default {
       
       */
     }
+  },
+  methods:{
+      openRedPacket:function(message){
+          this.isOpen="true"
+          
+      }
   }
 }
 </script>
 
 
 <style scoped>
+
     page {
         background: #FF6B49;
     }
@@ -179,7 +192,9 @@ export default {
         left: 0;
         right: 0;
         z-index: 100;
-        height: 1000px;
+        max-height: 460px;
+        max-width:450px;
+        
         }
     .cover-inner {
          position: relative;
@@ -232,8 +247,8 @@ export default {
       .open-button, .open-avatar {
         background: #FFEFBE;
         border-radius: 99em;
-        height: 130%;
-        width: 130%;
+        height:150px;
+        width: 150px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -251,6 +266,13 @@ export default {
     .cover.open {
     transition: height 0.3s ease;
      }
+     /*
+    .fade-enter-active,.fade-leave-active{
+        transition: height 1s 
+    }
+    .fade-enter,.fade-leave-to{
+        height:0%
+    }*/
    .open-view {
       background: transparent;
       box-shadow: none;
@@ -262,8 +284,10 @@ export default {
         bottom: 0;
         left: 0;
         right: 0;
-        height: 320px;
+        max-height: 320px;
         z-index: 99;
+        max-width:450px;
+        margin-top:-60px;
     }
     .back-inner {
       position: relative;
@@ -286,6 +310,7 @@ export default {
     .back.open {
     transition: height 0.3s ease;
     }
+    
     .bubble {
         border-radius:8px;
         margin: 2px auto 10px auto;
