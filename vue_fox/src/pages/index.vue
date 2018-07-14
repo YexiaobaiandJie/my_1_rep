@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <循环本来在这里>
+            <!--循环本来在这里-->
         </div> 
             
             <div class="result-list">  
@@ -91,7 +91,7 @@
     </transition>
 
     <transition>
-    <div class="cover" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:80%">
+    <div class="cover" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:100%">
         <div class="cover-inner">
             <img class="cover-img" src="../assets/cover-front-img@2x.png" />
             <div v-if="!isOpen" class="cover-summary">
@@ -122,7 +122,7 @@ export default {
             redPacket_owner_fullname:'redpacket_owner',
             coinid:'QB',
             unit:'Q',
-            isOpen: true,
+            isOpen: false,
             coverHeight: '1000',
             redPacket_message:'这里是红包信息',
             isExpired:true,  //是否过期
@@ -144,33 +144,10 @@ export default {
                 time:'1 days ago',
                 amount:'5',
             },
-            {
-                nickName:'Harry',
-                time:'1 days ago',
-                amount:'5',
-            },
-            {
-                nickName:'Harry',
-                time:'1 days ago',
-                amount:'5',
-            },
-            {
-                nickName:'Harry',
-                time:'1 days ago',
-                amount:'5',
-            },
-            {
-                nickName:'Harry',
-                time:'1 days ago',
-                amount:'5',
-            }
             ],
-    
-        
             openRedPacket:function(message){
                 this.isOpen="true"
-            }
-        
+            } 
     }
 }
 }
@@ -195,7 +172,7 @@ export default {
         left: 0;
         right: 0;
         z-index: 100;
-        max-height: 460px;
+        max-height: 490px;
         max-width:450px;
         
         }
@@ -279,7 +256,7 @@ export default {
         bottom: 0;
         left: 0;
         right: 0;
-        max-height: 320px;
+        max-height: 620px;
         z-index: 99;
         max-width:450px;
         margin-top:-60px;
