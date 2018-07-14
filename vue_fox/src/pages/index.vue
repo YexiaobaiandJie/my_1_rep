@@ -10,11 +10,13 @@
         <div v-if="isExpired" class="slow-hint">
             硬币过期了，下手得早点儿
         </div>
-        --> 
-       <!-- <div v-else-if="!isAvailable && record === null" class="slow-hint">-->
-          <!--<div v-else-if="isAvailable" class="slow-hint">
+        -->
+       <!-- 
+        <div v-else-if="!isAvailable && record === null" class="slow-hint">-->
+          <div v-if="isAvailable" class="slow-hint">
             硬币被抢光了，下手得再快点
-        </div>-->
+          </div>
+        
 
         <!--
         <div v-else>
