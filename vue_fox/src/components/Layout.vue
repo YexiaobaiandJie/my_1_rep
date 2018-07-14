@@ -24,7 +24,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 .body{
-    sbackground:#f1f1f1;
+    background:#f1f1f1;
     
       
 }

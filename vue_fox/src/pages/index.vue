@@ -2,18 +2,21 @@
 <div class="container">
     
     <div class="content">
-        
+        <!--
         <div class="owner-info">{{redPacket_owner_fullname}} 的 {{coinid}} 硬币</div> 
         <div class="bubble">{{redPacket_message}}</div>
-        
-        
+        -->
         <!--
-        <div v-if="isExpired && record === null" class="slow-hint">
+        <div v-if="isExpired" class="slow-hint">
             硬币过期了，下手得早点儿
-        </div>   
-        <div v-else-if="!isAvailable && record === null" class="slow-hint">
+        </div>
+        --> 
+       <!-- <div v-else-if="!isAvailable && record === null" class="slow-hint">-->
+          <!--<div v-else-if="isAvailable" class="slow-hint">
             硬币被抢光了，下手得再快点
-        </div>  
+        </div>-->
+
+        <!--
         <div v-else>
             <div class="balance-block" v-if="record">
                <balance-view :amount.sync="amountValue" :unit.sync="unit" :priceUsd.sync="priceUsd" text=""></balance-view>
@@ -45,28 +48,36 @@
                     硬币已抢光，用时{{during}}
                 </div>
             </div>
+
+            <循环本来在这里>
+        </div>-->  
             
-            <div class="result-list">
-                
+            <div class="result-list">  
                 <div class="result-item">
-                    <ul>
-                        <li v-bind:v-for="result in pickResult">  
-                            
-                            <image class="result-item-avatar" src="{{result.avatarUrl}}" />  
+                
+                    <ol>
+                        <li v-for="result in pickResults" style="width:350px;">  
+                            <!--<image class="result-item-avatar" src="{{result.avatarUrl}}" />-->
                             <div class="result-item-left">
                                 <div class="result-item-name">{{result.nickName}}</div>
-                                <div class="result-item-time">{{result.time}}</div>   
+                                <div class="result-item-time">{{result.time}}</div> 
+                                
                             </div>
                             <div class="result-item-right">
-                                <div class="result-item-amount">{{result.amount}} {{unit}}</div>
-                                <div wx:if="{{result.bestLuck}}" class="result-item-best-luck">👑 手气最佳</div>
+                                <div class="result-item-amount">{{result.amount}}</div>
+                                <!--<div wx:if="{{result.bestLuck}}" class="result-item-best-luck">👑 手气最佳</div>-->
                             </div>
                         </li>
-                    </ul>
-                </div>
+                    </ol>
+                  
                 
+
+                </div>
             </div>
-        </div>-->
+            
+            
+            
+            
     </div>
 
     <transition>
@@ -102,78 +113,46 @@
 </template>
 
 <script>
-/*看不懂，先放着
-        import wepy from 'wepy'
-        import BalanceView from '@/components/balance-view'
-        import LoginModal from '@/components/login-modal'
-        import FxButton from '@/components/fx-button'
-        import moment from 'moment'
-*/
+
 export default {
-    /*
-    config = {
-      navigationBarTitleText: '幸运硬币',
-      navigationBarTitleColor: '#FF6B49',
-      backgroundColor: '#FF6B49'
-    },
-    components = {
-      'login-modal': LoginModal,
-      'fx-balance-button': FxButton,
-      'fx-guide-button': FxButton,
-      'balance-view': BalanceView
-    },
-    mixins = [],
-    */
-    data () {
-      return {
+    
+    data (){
+        return{
             senderName:'helijie',
             redPacket_owner_fullname:'redpacket_owner',
             coinid:'QB',
             unit:'Q',
-            isOpen: false,
+            isOpen: true,
             coverHeight: '1000',
             redPacket_message:'这里是红包信息',
             isExpired:true,  //是否过期
             isAvailable:true, //是否被抢光
-            pickResult: [
+            
+            pickResults: [
             {
-         // avatarUrl:,
                 nickName:'Tom',
                 time:'2018-7-12 12:10:27',
                 amount:'1',
-
-            }],
-      /*
-      showGuideModal: false,
-      showLoginModal: false,
-      amountValue: '',
-      unit: '',
-      senderName: '',
-      priceUsd: '',
-      //pickResult
-      pickResult: [],
-      loginDoneFnName: 'getRecord',
-      
-      backHeight: 320,
-      packetId: 0,
-      uuid: 0,
-      isExpired: false,
-      isAvailable: false,
-      //redPacket
-      redPacket: null,
-      //record
-      record: null,
-      asset: null,
-      
-      */
+            },
+            {
+                nickName:'Alice',
+                time:'2018-7-12 12:12:47',
+                amount:'2',
+            },
+            {
+                nickName:'Harry',
+                time:'2018-7-12 12:15:17',
+                amount:'5',
+            }
+            ],
+    
+        
+            openRedPacket:function(message){
+                this.isOpen="true"
+            }
+        
     }
-  },
-  methods:{
-      openRedPacket:function(message){
-          this.isOpen="true"
-          
-      }
-  }
+}
 }
 </script>
 
@@ -261,18 +240,10 @@ export default {
         border-radius: 99em;
         height: 100%;
       }
-
-
     .cover.open {
     transition: height 0.3s ease;
      }
-     /*
-    .fade-enter-active,.fade-leave-active{
-        transition: height 1s 
-    }
-    .fade-enter,.fade-leave-to{
-        height:0%
-    }*/
+
    .open-view {
       background: transparent;
       box-shadow: none;
@@ -325,8 +296,10 @@ export default {
     }
     .owner-info {
         text-align: center;
-        font-size: 14px;
+        font-size: 19px;
         margin-bottom: 10px;
+        color:#111
+        
     }
     .container.closed {
         overflow: hidden;
@@ -342,227 +315,74 @@ export default {
     .content.open {
         opacity: 1;
     }
+    .slow-hint {
+        text-align: center;
+        color: #F55C23;
+        margin: 10px auto 30px auto;
+    }
 
-/*
-  page {
-    background: #FF6B49;
-  }
-  .container {
-    background: #FFF;
-  }
-  .container.closed {
-    overflow: hidden;
-  }
-  .content {
-    padding: 170px 0 100px 0;
-    width:100%;
-    opacity: 0;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .content.open {
-    opacity: 1;
-  }
-  .owner-info {
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  //!!!!!
-  .bubble {
-    border-radius:8px;
-    margin: 2px auto 10px auto;
-    text-align: center;
-    font-size: 14px;
-    padding: 4px 8px;
-    background:#eee;
-    color: #888;
-    max-width:300px;
-    display: inline-block;
-    position: relative;
-    &::before {
-      content: " ";
-      display: block;
-      width: 0;
-      height: 0;
-      border-width: 6px;
-      border-color: transparent transparent #eee transparent;
-      border-style: solid;
-      position: absolute;
-      top: 0;
-      left: 50%;
-      margin-left: -6px;
-      margin-top: -12px;
+    .result-list {
+        padding: 0 16px;
     }
-  }
-  
-      //！！！这里放打开红包之后的样式 Open系列 没打开就用cover系列
-      .open-view {
-        position: absolute;
-        z-index: 110;
-        bottom: 0;
-        left: 50%;
-        margin-left: -50px;
-        margin-bottom: -50px;
-        background: #FFD244;
-        border: 1px solid #A22C13;
-        box-shadow: 0 1px 2px 0 #A33720;
-        color: #E0644A;
-        border-radius: 99em;
-        height: 100px;
-        width: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .open-button, .open-avatar {
-        background: #FFEFBE;
-        border-radius: 99em;
-        height: 88px;
-        width: 88px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 50px;
-        box-shadow: 0 1px 2px 0 rgba(172,105,18,0.50);
-      }
-      .open-avatar-img {
-        border-radius: 99em;
-        height: 100%;
-      }
-    }
-  }
-  .cover.open {
-    transition: height 0.3s ease;
-    .open-view {
-      background: transparent;
-      box-shadow: none;
-      border: none;
-    }
-  }
-  .back {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 320px;
-    z-index: 99;
-    .back-inner {
-      position: relative;
-      height: 100%;
-      width: 100%;
-      .back-border {
-        position: absolute;
-        top: -4px;
-        border-top: 1px solid #DD6A37;
-        border-bottom: 1px solid #DD6A37;
-        height: 2px;
-        left: 0;
-        right: 0;
-      }
-      .back-img {
-        height: 100%;
-        width: 100%;
-      }
-    }
-  }
-  .back.open {
-    transition: height 0.3s ease;
-  }
-  .login-to-view-button {
-    width: 200px;
-    margin: 10px auto;
-  }
-  .result-list-meta {
-    color: #aaa;
-    font-size: 12px;
-    padding: 0 0 0 16px;
-    margin-bottom: 2px;
-  }
-  .result-list {
-    padding: 0 16px;
     .result-item:first-child {
       border-top: 1px solid #aaa;
     }
-    //！！！！！！！
+   
     .result-item {
-      display: flex;
+      display:flex;
       flex-direction: row;
       border-top: 1px dashed #aaa;
       padding: 10px 0;
       align-items: center;
       color: #000;
-      .result-item-avatar {
+    }
+    .result-item-avatar {
         height: 32px;
         width: 32px;
         border-radius: 50%;
-      }
-      .result-item-name, .result-item-amount {
+    }
+    /*
+    .result-item-name, .result-item-amount {
         align-items: center;
         display: flex;
-      }
-      .result-item-left {
-        margin-left: 10px;
-        flex: 1;
-        .result-item-name {
+        color:#000;
+    }*/
+    
+    .result-item-name {
           font-size: 16px;
-        }
-        .result-item-time {
+
+    }
+    .result-item-time {
+        
           font-size: 12px;
           color: #aaa;
-        }
-      }
-      .result-item-right {
-        justify-content: flex-end;
-        .result-item-amount {
+    }
+    .result-item-amount {
           font-size: 16px;
           text-align: right;
+          
+         /* 
           align-items: flex-end;
-          justify-content: flex-end;
-        }
-        .result-item-best-luck {
+          justify-content: flex-end;*/
+    }
+    .result-item-left {
+        width:200px;
+        margin-left: 10px;
+        flex: 1;
+        
+    }
+    .result-item-right {
+        
+        /*justify-content: flex-end;*/
+
+    }
+    
+    .result-item-best-luck {
           color: #F55C23;
           font-size: 12px;
           text-align: right;
-        }
-      }
-    }
-  }
-  //!!!!!!!!!!!打开后的样式
-  .slow-hint {
-    text-align: center;
-    color: #F55C23;
-    margin: 10px auto 30px auto;
-  }
-  //!!!!!!!!!!!!
-  .balance-block {
-    margin-bottom: 0px;
-  }
-  .button-wrapper {
-    margin: 0 auto 20px auto;
-    width: 60%;
-  }
-  .guide-title {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .guide-text {
-    font-size: 14px;
-    padding: 10px 16px;
-  }
-  .guide-image-wrapper {
-    margin: 0 auto 10px auto;
-    width: 259px;
-    height: 102px;
-    image {
-      width: 259px;
-      height: 102px;
-    }
-  }
-  .guide-button-wrapper {
-    padding: 10px 16px;
-    margin-bottom: 10px;
-  }
-  */
+    }   
+
+
+
 </style>
