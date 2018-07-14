@@ -24,10 +24,10 @@
             </div>
         </div>
         -->
-        <!--
+        
         <div v-if="!isNewUser" class="button-wrapper">
             
-           <button @tap.user="tapBalanceButton">查看余额</button>
+           <button class="browe">查看余额</button>
         </div>
         <div v-if="isNewUser">
             
@@ -50,13 +50,13 @@
             </div>
 
             <循环本来在这里>
-        </div>-->  
+        </div> 
             
             <div class="result-list">  
                 <div class="result-item">
                 
                     <ol>
-                        <li v-for="result in pickResults" style="width:350px;">  
+                        <li v-for="result in pickResults"class="li_c">  
                             <!--<image class="result-item-avatar" src="{{result.avatarUrl}}" />-->
                             <div class="result-item-left">
                                 <div class="result-item-name">{{result.nickName}}</div>
@@ -131,17 +131,37 @@ export default {
             pickResults: [
             {
                 nickName:'Tom',
-                time:'2018-7-12 12:10:27',
+                time:'12:10:56',
                 amount:'1',
             },
             {
                 nickName:'Alice',
-                time:'2018-7-12 12:12:47',
+                time:'7:12:47',
                 amount:'2',
             },
             {
                 nickName:'Harry',
-                time:'2018-7-12 12:15:17',
+                time:'1 days ago',
+                amount:'5',
+            },
+            {
+                nickName:'Harry',
+                time:'1 days ago',
+                amount:'5',
+            },
+            {
+                nickName:'Harry',
+                time:'1 days ago',
+                amount:'5',
+            },
+            {
+                nickName:'Harry',
+                time:'1 days ago',
+                amount:'5',
+            },
+            {
+                nickName:'Harry',
+                time:'1 days ago',
                 amount:'5',
             }
             ],
@@ -161,6 +181,10 @@ export default {
 
     page {
         background: #FF6B49;
+    }
+    .li_c{
+        width:350px;
+        margin-bottom:19px;
     }
     .container {
         background: #FFF;
@@ -341,12 +365,12 @@ export default {
         width: 32px;
         border-radius: 50%;
     }
-    /*
+    
     .result-item-name, .result-item-amount {
         align-items: center;
         display: flex;
         color:#000;
-    }*/
+    }
     
     .result-item-name {
           font-size: 16px;
@@ -360,21 +384,21 @@ export default {
     .result-item-amount {
           font-size: 16px;
           text-align: right;
-          
-         /* 
           align-items: flex-end;
-          justify-content: flex-end;*/
+          justify-content: flex-end;
     }
     .result-item-left {
-        width:200px;
+        width:250px;
         margin-left: 10px;
-        flex: 1;
-        
+        margin-bottom:5px;
+        flex:1;
+        float:left;
     }
     .result-item-right {
-        
-        /*justify-content: flex-end;*/
-
+        width:10px;
+        display:flex;
+        /*justify-content: flex-end;*/  
+        float:left;
     }
     
     .result-item-best-luck {
@@ -382,7 +406,18 @@ export default {
           font-size: 12px;
           text-align: right;
     }   
-
+    .login-to-view-button {
+        width: 200px;
+        margin: 10px auto;
+    }
+    .browe{
+        width:120px;
+        height:40px;
+        margin-left:36%;
+        border:1px solid #ff4500;
+        background: #F1F1F1;
+        border-radius: 12em;
+    }
 
 
 </style>
