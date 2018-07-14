@@ -65,7 +65,7 @@
                             </div>
                             <div class="result-item-right">
                                 <div class="result-item-amount">{{result.amount}}</div>
-                                <!--<div wx:if="{{result.bestLuck}}" class="result-item-best-luck">👑 手气最佳</div>-->
+                                <div v-if="result.bestLuck" class="result-item-best-luck">👑 手气最佳</div>
                             </div>
                         </li>
                     </ol>
@@ -80,18 +80,24 @@
             
     </div>
 
-    <transition>
-        <div class="back" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:100%">
+    
+        <div class="back" v-show="!isOpen" v-bind:class="{'open':isOpen}" >
             <div class="back-inner">
                 <div class="back-border"></div>
             <img class="back-img"  src="../assets/cover-back-img@2x.png" />
                 <!--<div v-if="!isOpen" class="cover-summary">-->
             </div>
         </div>
-    </transition>
+        <div class="back_" v-show="isOpen" v-bind:class="{'open':isOpen}">
+            <div class="back-inner">
+                <div class="back-border"></div>
+            <img class="back-img"  src="../assets/cover-back-img@2x.png" />
+                <!--<div v-if="!isOpen" class="cover-summary">-->
+            </div>
+        </div>
 
-    <transition>
-    <div class="cover" v-show="!isOpen" v-bind:class="{'open':isOpen}" style="height:100%">
+    
+    <div class="cover" v-show="!isOpen">
         <div class="cover-inner">
             <img class="cover-img" src="../assets/cover-front-img@2x.png" />
             <div v-if="!isOpen" class="cover-summary">
@@ -107,7 +113,29 @@
             </div>
         </div>
     </div>
-    </transition>
+
+    <div class="cover_" v-show="isOpen">
+        <div class="cover-inner">
+            <img class="cover-img" src="../assets/cover-front-img@2x.png" />
+            <div v-if="!isOpen" class="cover-summary">
+                <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
+            </div>
+            <div class="open-view">
+                <!--
+                <div v-if="isOpen" class="open-avatar">
+                   <image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />
+                </div>
+                
+                <button v-else class="open-button_" v-on:click="openRedPacket(message)" >
+                    <img src="../assets/open-button-label-img@2x.png" />
+                </button>
+                -->
+                <button class="open-button_" v-on:click="openRedPacket(message)" >
+                    
+                </button>
+            </div>
+        </div>
+    </div>
     
 </div>
 </template>
@@ -133,16 +161,19 @@ export default {
                 nickName:'Tom',
                 time:'12:10:56',
                 amount:'1',
+                bestLuck:false
             },
             {
                 nickName:'Alice',
                 time:'7:12:47',
                 amount:'2',
+                bestLuck:false
             },
             {
                 nickName:'Harry',
                 time:'1 days ago',
                 amount:'5',
+                bestLuck:true
             },
             ],
             openRedPacket:function(message){
@@ -156,8 +187,8 @@ export default {
 
 <style scoped>
 
-    page {
-        background: #FF6B49;
+    .open_{
+        
     }
     .li_c{
         width:350px;
@@ -174,8 +205,18 @@ export default {
         z-index: 100;
         max-height: 490px;
         max-width:450px;
-        
-        }
+        height:100%;
+    }
+    .cover_{
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        max-height: 490px;
+        max-width:450px;
+        height:35%;
+    }
     .cover-inner {
          position: relative;
          height: 100%;
@@ -224,7 +265,7 @@ export default {
         align-items: center;
         justify-content: center;
       }
-      .open-button, .open-avatar {
+    .open-button, .open-avatar {
         background: #FFEFBE;
         border-radius: 99em;
         height:150px;
@@ -235,14 +276,25 @@ export default {
         font-size: 50px;
         border:10px solid #FFD244;
         box-shadow: 0 1px 2px 0 rgba(172,105,18,0.50);
-      }
-      
-      .open-avatar-img {
+    }
+    .open-button_{
+        background: #FFEFBE;
+        border-radius: 99em;
+        height:80px;
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        border:5px solid #FFD244;
+        box-shadow: 0 1px 2px 0 rgba(172,105,18,0.50);
+    }
+    .open-avatar-img {
         border-radius: 99em;
         height: 100%;
       }
     .cover.open {
-    transition: height 0.3s ease;
+    transition: height 0.1s ease;
      }
 
    .open-view {
@@ -260,6 +312,18 @@ export default {
         z-index: 99;
         max-width:450px;
         margin-top:-60px;
+        height:100%;
+    }
+    .back_{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 620px;
+        z-index: 99;
+        max-width:450px;
+        margin-top:-60px;
+        height:8%;
     }
     .back-inner {
       position: relative;
@@ -280,7 +344,8 @@ export default {
         width: 100%;
     }
     .back.open {
-    transition: height 0.3s ease;
+    transition: height 0.1s ease;
+
     }
     
     .bubble {
@@ -372,7 +437,7 @@ export default {
         float:left;
     }
     .result-item-right {
-        width:10px;
+        width:90px;
         display:flex;
         /*justify-content: flex-end;*/  
         float:left;
@@ -391,6 +456,7 @@ export default {
         width:120px;
         height:40px;
         margin-left:36%;
+        margin-bottom:5px;
         border:1px solid #ff4500;
         background: #F1F1F1;
         border-radius: 12em;
