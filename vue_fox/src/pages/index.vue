@@ -13,10 +13,11 @@
         -->
        <!-- 
         <div v-else-if="!isAvailable && record === null" class="slow-hint">-->
-          <div v-if="isAvailable" class="slow-hint">
+          <!--
+        <div v-if="isAvailable" class="slow-hint">
             硬币被抢光了，下手得再快点
-          </div>
-        
+        </div>
+            -->
 
         <!--
         <div v-else>
@@ -27,16 +28,18 @@
         </div>
         -->
         
-        <div v-if="!isNewUser" class="button-wrapper">
-            
+        <!--<div v-if="!isNewUser" class="button-wrapper">-->
+        <div class="button-wrapper">
            <button class="browe">查看余额</button>
         </div>
+        <!--
         <div v-if="isNewUser">
             
             <button v-if="isNewUser" class="login-to-view-button" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfoToView">
                  登录查看领取记录
             </button>
         </div>
+
        
         <div v-else>
             
@@ -50,10 +53,10 @@
                     硬币已抢光，用时{{during}}
                 </div>
             </div>
-
-            <!--循环本来在这里-->
-        </div> 
             
+            
+        </div> 
+         -->   
             <div class="result-list">  
                 <div class="result-item">
                 
@@ -148,41 +151,35 @@ export default {
     
     data (){
         return{
-            senderName:'helijie',
-            redPacket_owner_fullname:'redpacket_owner',
-            coinid:'QB',
-            unit:'Q',
+            senderName:'',
+            fullname:'',
+            amountValue:'',
+            unit:'',
+            //priceUsd:'',
             isOpen: false,
-            coverHeight: '1000',
-            redPacket_message:'这里是红包信息',
-            isExpired:true,  //是否过期
-            isAvailable:true, //是否被抢光
-            
-            pickResults: [
-            {
-                nickName:'Tom',
-                time:'12:10:56',
-                amount:'1',
-                bestLuck:false
-            },
-            {
-                nickName:'Alice',
-                time:'7:12:47',
-                amount:'2',
-                bestLuck:false
-            },
-            {
-                nickName:'Harry',
-                time:'1 days ago',
-                amount:'5',
-                bestLuck:true
-            },
-            ],
+            packetId:0,
+            uuid:0,
+            isExpired:false,  //是否过期
+            isAvailable:false, //是否被抢光
+            redPacket:null,
+            record:null,
+            asset:null,
+            pickResults: [],
             openRedPacket:function(message){
                 this.isOpen="true"
-            } 
-    }
-}
+            }
+        }
+},
+mounted:function(response){
+            console.log('ads')
+            this.senderName=redata.redPacket.owner.fullname;
+            this.amountValue=response.data.amount;
+            this.unit=response.data.assetSymbol;
+            this.isExpired=response.data.expired;
+            this.redPacket=response.data.redPacket;
+            this.fullname=response.data.redPacket.owner.fullname;
+        }
+
 }
 </script>
 
