@@ -168,8 +168,29 @@ export default {
             openRedPacket:function(message){
                 this.isOpen="true"
             }
-        }
-}
+    }
+},
+mounted: function(){
+    //GET /someUrl
+    
+    this.$http.get( `https://dev.fox.one/api/luckycoin/detail/80`,{
+      headers:{
+        'content-type': 'application/json',
+        'x-client-build': '101',
+        'x-client-version': '2.0.1',
+        'x-client-device-id': 'red_packet_web',
+        'x-client-type': '2',
+       // 'x-client-name': 'Mia'
+      }
+    }).then(response =>{
+        
+        this.senderName=response.data.data.redPacket.owner.fullname
+        this.unit=response.data.data.redPacket.assetSymbol
+        
+    },response =>{
+        console.log(error);
+    });
+  }
 
 }
 </script>
