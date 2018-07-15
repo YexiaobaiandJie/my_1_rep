@@ -62,7 +62,7 @@ new Vue({
       }
     }).then(response =>{
         console.log(response.data);
-        redata=response.data;
+        
     },response =>{
         console.log(error);
     });

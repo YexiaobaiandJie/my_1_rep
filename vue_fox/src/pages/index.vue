@@ -169,16 +169,7 @@ export default {
                 this.isOpen="true"
             }
         }
-},
-mounted:function(response){
-            console.log('ads')
-            this.senderName=redata.redPacket.owner.fullname;
-            this.amountValue=response.data.amount;
-            this.unit=response.data.assetSymbol;
-            this.isExpired=response.data.expired;
-            this.redPacket=response.data.redPacket;
-            this.fullname=response.data.redPacket.owner.fullname;
-        }
+}
 
 }
 </script>
