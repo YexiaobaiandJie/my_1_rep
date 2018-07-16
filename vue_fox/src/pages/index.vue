@@ -2,31 +2,29 @@
 <div class="container">
     
     <div class="content">
-        <!--
-        <div class="owner-info">{{redPacket_owner_fullname}} 的 {{coinid}} 硬币</div> 
-        <div class="bubble">{{redPacket_message}}</div>
-        -->
-        <!--
+        
+        <div class="owner-info">{{fullname}} 的 {{coinid}} 硬币</div> 
+        <div class="bubble">{{message}}</div>
+        
+        
         <div v-if="isExpired" class="slow-hint">
             硬币过期了，下手得早点儿
         </div>
-        -->
-       <!-- 
-        <div v-else-if="!isAvailable && record === null" class="slow-hint">-->
-          <!--
+        
+       
+        <div v-else-if="!isAvailable && record === null" class="slow-hint">
         <div v-if="isAvailable" class="slow-hint">
             硬币被抢光了，下手得再快点
         </div>
-            -->
-
-        <!--
+        </div>
+    
         <div v-else>
             <div class="balance-block" v-if="record">
                <balance-view :amount.sync="amountValue" :unit.sync="unit" :priceUsd.sync="priceUsd" text=""></balance-view>
                 
             </div>
         </div>
-        -->
+        
         
         <!--<div v-if="!isNewUser" class="button-wrapper">-->
         <div class="button-wrapper">
@@ -39,27 +37,22 @@
                  登录查看领取记录
             </button>
         </div>
-
+        -->
        
-        <div v-else>
-            
-            <div v-if="redPacket" class="result-list-meta">
-                
-                <div v-if="redPacket.number !== 0">
-                    共{{redPacket.total}}个，已领取{{redPacket.total-redPacket.number}}个
+        <div>
+            <div v-if="redPacket" >  <!--class="result-list-meta"-->
+                <div v-if="number !== 0">
+                    共{{total}}个，已领取{{total-number}}个
                 </div>
                 
                 <div v-else>
                     硬币已抢光，用时{{during}}
                 </div>
             </div>
-            
-            
         </div> 
-         -->   
+          
             <div class="result-list">  
                 <div class="result-item">
-                
                     <ol>
                         <li v-for="result in pickResults"class="li_c">  
                             <!--<image class="result-item-avatar" src="{{result.avatarUrl}}" />-->
@@ -74,9 +67,6 @@
                             </div>
                         </li>
                     </ol>
-                  
-                
-
                 </div>
             </div>
             
@@ -84,8 +74,6 @@
             
             
     </div>
-
-    
         <div class="back" v-show="!isOpen" v-bind:class="{'open':isOpen}" >
             <div class="back-inner">
                 <div class="back-border"></div>
@@ -102,105 +90,217 @@
         </div>
 
     
-    <div class="cover" v-show="!isOpen">
-        <div class="cover-inner">
-            <img class="cover-img" src="../assets/cover-front-img@2x.png" />
-            <div v-if="!isOpen" class="cover-summary">
-                <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
-            </div>
-            <div class="open-view">
-                <div v-if="isOpen" class="open-avatar">
-                   <!--这个可能是接收头像<image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />-->
+        <div class="cover" v-show="!isOpen">
+            <div class="cover-inner">
+                <img class="cover-img" src="../assets/cover-front-img@2x.png" />
+                <div v-if="!isOpen" class="cover-summary">
+                    <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
                 </div>
-                <button v-else class="open-button" v-on:click="openRedPacket(message)">
-                    <img src="../assets/open-button-label-img@2x.png" />
-                </button>
+                <div class="open-view">
+                    <div v-if="isOpen" class="open-avatar">
+                    <!--这个可能是接收头像<image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />-->
+                    </div>
+                    <button v-else class="open-button" v-on:click="openRedPacket(message)">
+                        <img src="../assets/open-button-label-img@2x.png" />
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="cover_" v-show="isOpen">
-        <div class="cover-inner">
-            <img class="cover-img" src="../assets/cover-front-img@2x.png" />
-            <div v-if="!isOpen" class="cover-summary">
-                <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
-            </div>
-            <div class="open-view">
-                <!--
-                <div v-if="isOpen" class="open-avatar">
-                   <image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />
+        <div class="cover_" v-show="isOpen">
+            <div class="cover-inner">
+                <img class="cover-img" src="../assets/cover-front-img@2x.png" />
+                <div v-if="!isOpen" class="cover-summary">
+                    <div class="cover-summary-text">来自{{senderName}}的{{unit}}硬币</div>
                 </div>
-                
-                <button v-else class="open-button_" v-on:click="openRedPacket(message)" >
-                    <img src="../assets/open-button-label-img@2x.png" />
-                </button>
-                -->
-                <button class="open-button_" v-on:click="openRedPacket(message)" >
+                <div class="open-view">
+                    <!--
+                    <div v-if="isOpen" class="open-avatar">
+                    <image mode="aspectFit" class="open-avatar-img" src="{{avatarUrl}}" />
+                    </div>
                     
-                </button>
+                    <button v-else class="open-button_" v-on:click="openRedPacket(message)" >
+                        <img src="../assets/open-button-label-img@2x.png" />
+                    </button>
+                    -->
+                    <button class="open-button_" v-on:click="openRedPacket()" >
+                        
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
     
 </div>
 </template>
 
 <script>
-
-export default {
+    import moment from 'moment';
+    export default {
     
-    data (){
-        return{
-            senderName:'',
-            fullname:'',
-            amountValue:'',
-            unit:'',
-            //priceUsd:'',
-            isOpen: false,
-            packetId:0,
-            uuid:0,
-            isExpired:false,  //是否过期
-            isAvailable:false, //是否被抢光
-            redPacket:null,
-            record:null,
-            asset:null,
-            pickResults: [],
-            openRedPacket:function(message){
-                this.isOpen="true"
+        data (){
+            return{
+                senderName:'',
+                fullname:'',
+                amountValue:'',
+                unit:'',
+                message:'',
+                isOpen: false,
+                packetId:0,
+                uuid:0,
+                isExpired:false,  //是否过期
+                isAvailable:false, //是否被抢光
+                redPacket:true,
+                record:null,
+                asset:null,
+                pickResults: [],
+                total:'',
+                during:'',
+                coinid:'',
+                loginDoneFnName:'',
+                showLoginModal:'',
+                number:'',
+                openRedPacket:function(message){
+                    //this.isOpen="true"
+                    //localStorage.setItem('record1','this is the contain of record1')
+                    this.$options.method.bindGetUserInfo()
+                   // drawPacket()
+                }
+        }
+    },
+    mounted: function(){
+        //GET /someUrl
+        
+        this.$http.get( `https://dev.fox.one/api/luckycoin/detail/80`,{
+        headers:{
+            'content-type': 'application/json',
+            'x-client-build': '101',
+            'x-client-version': '2.0.1',
+            'x-client-device-id': 'red_packet_web',
+            'x-client-type': '2',
+        }
+        }).then(response =>{
+            console.log(response.data)
+            this.senderName=response.data.data.redPacket.owner.fullname
+            this.fullname=response.data.data.redPacket.owner.fullname
+            this.coinid=response.data.data.redPacket.assetSymbol
+            this.unit=response.data.data.redPacket.assetSymbol
+            this.message=response.data.data.redPacket.message
+            this.isAvailable=response.data.data.redPacket.number
+            this.number=response.data.data.redPacket.amount
+            this.total=response.data.data.redPacket.amount
+            this.during=moment.duration((response.data.data.redPacket.createdAt-response.data.data.redPacket.archivedAt)*1000).humanize()
+        },response =>{
+            console.log(error);
+        });
+    },
+    method:{
+        bindGetUserInfo:function(){
+            var stor=window.localStorage
+            var token_value=null
+            var notlogin="你没有登录"
+            var login_="登录成功，已返回数据"
+            for(var i=0;i<stor.length;i++){
+                var key=stor.key(i)
+                if(key==='token')
+                    token_value=localStorage.getItem(key)
             }
-    }
-},
-mounted: function(){
-    //GET /someUrl
-    
-    this.$http.get( `https://dev.fox.one/api/luckycoin/detail/80`,{
-      headers:{
-        'content-type': 'application/json',
-        'x-client-build': '101',
-        'x-client-version': '2.0.1',
-        'x-client-device-id': 'red_packet_web',
-        'x-client-type': '2',
-       // 'x-client-name': 'Mia'
-      }
-    }).then(response =>{
-        
-        this.senderName=response.data.data.redPacket.owner.fullname
-        this.unit=response.data.data.redPacket.assetSymbol
-        
-    },response =>{
-        console.log(error);
-    });
-  }
+            console.log(token_value)
+           
+            if(token_value==null){
+                console.log(notlogin)
+                //this.$option.method.login()
+            }
+            else{
+                this.$http.get('https://dev.fox.one/api/account/login_wechat',{
+                data:{
+                    token:token_value
+                }
+            }).then((res) => {/*
+                if(res && res.code === 0) {
+                    sessionStorage.setItem('token',res.data.token)
+                    sessionStorage.setItem('fxUserInfo',res.data.user)
+                    resolve(res)
+                } else  {
+                    reject(res)
+                }*/
+                console.log(res.data)
+                console.log(login_)
+            }).catch((err) => {
+                reject(err)
+            })
+            }
+        }
 
+
+            /*this.login()
+            .then((res) => {
+                this.drawPacket().then((res) => {
+                    hideLoading()
+                }).catch((err) => {
+                    console.log(err)
+                    showToast({icon:'none',title:'Err:'+err.code})
+                })
+            })
+            .catch((err) => {
+                hideLoading()
+            if (err.code === 1539) {
+              this.loginDoneFnName = 'drawPacket'
+              this.showLoginModal = true
+              this.$apply()
+            }
+            if (err.code === 1) {
+                showToast({icon: 'none', title: '网络不稳定，请稍后重试'})
+            }
+            })
+        },*/
+        /*
+        login:function(){
+            var utoken=sessionStorage.getItem('token');
+            this.$http.get('https://dev.fox.one/api/account/login_wechat',{
+                data:{
+                    token:utoken
+                }
+            }).then((res) => {
+                if(res && res.code === 0) {
+                    sessionStorage.setItem('token',res.data.token)
+                    sessionStorage.setItem('fxUserInfo',res.data.user)
+                    resolve(res)
+                } else  {
+                    reject(res)
+                }
+            }).catch((err) => {
+                reject(err)
+            })
+        },*/
+        /*
+        drawPacket:function(opts) {
+            return new Promise((resolve, reject) => {
+            net.request({
+                method: 'POST',
+                url: `https://dev.fox.one/api/luckycoin/draw/${opts.packetId}`,
+                data: {'uuid': opts.uuid}
+            }).then((res) => {
+                if (res && res.code === 0) {
+                resolve(res)
+                } else {
+                reject(res)
+                }
+            }).catch((err) => {
+                console.log(err)
+                reject(err)
+            })
+            })
+        }*/
+    }
 }
+
+    
+
 </script>
 
 
 <style scoped>
 
-    .open_{
-        
-    }
     .li_c{
         width:350px;
         margin-bottom:19px;
