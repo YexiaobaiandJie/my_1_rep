@@ -1,14 +1,39 @@
 <template>
   <div id="app">
     <!--<img src="./assets/logo.png">-->
+    <div id="notebook">
+      <h1>list of note</h1>
+      <hr />
+      <div v-for="noteitem in noteitems">
+        <div class="box1">
+          <img src="./assets/logo.png" style="width:145px;height:145px;">
+          <br />
+          {{noteitem.label}}
+          <br />
+          {{noteitem.time}}
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div id="todolist" v-show="isopen">
     <h1>{{title}}</h1>
     <input class="text1" type="text" v-model="newitem" v-on:keyup.enter="additem()"/>
     <div class="label1" v-for="item in items" v-bind:class="{FinC:item.isFinished}" v-on:click="finishitem(item)">
         {{item.label}}
         
     </div>
-    <p class="del1" v-bind:class="{delp:items.length===0}" v-on:click="delall"> >delete-all< </p>
-    
+    <p class="del1" v-bind:class="{delp:items.length===0}" v-on:click="delall"> delete-all </p>
+    </div>
   </div>
 </template>
 
@@ -25,7 +50,25 @@ export default {
       title:'TODOLIST',
       value:'',
       items:Store.fetch(),
-      newitem:''
+      newitem:'',
+      isopen:false,
+      noteitems:[
+        {
+          label:'meeting',
+          time:'2017-9-18',
+          isFinished:true
+        },
+        {
+          label:'go home',
+          time:'2018-11-10',
+          isFinished:false
+        },
+        {
+          label:'visit',
+          time:'2018-10-19',
+          isFinished:true
+        }
+      ]
     }
   },
   methods:{
@@ -94,5 +137,14 @@ export default {
 .del1{
   cursor:default;
   color:#111;
+}
+.box1{
+  background-color: #f1f1f1;
+  width:180px;
+  height:200px;
+  float:left;
+  border:1px none;
+  margin-left:15px;
+  box-shadow:8px 8px 4px #c7c7c7;
 }
 </style>
