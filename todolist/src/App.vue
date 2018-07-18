@@ -1,16 +1,21 @@
 <template>
   <div id="app">
     <!--<img src="./assets/logo.png">-->
-    <div id="notebook">
+    <div id="notebook" v-show="!isopen">
       <h1>list of note</h1>
       <hr />
-      <div v-for="noteitem in noteitems">
-        <div class="box1">
+      <div v-for="noteitem in noteitems" v-on:click="opennote(noteitem)">
+        <div class="box1" v-bind:class="{box2:noteitem.isFinished}">
           <img src="./assets/logo.png" style="width:145px;height:145px;">
           <br />
-          {{noteitem.label}}
+            {{noteitem.label}}
           <br />
-          {{noteitem.time}}
+          <div v-show="!noteitem.isFinished">
+            {{noteitem.time}}
+          </div>
+          <div v-show="noteitem.isFinished" class="fin-w">
+            completed 
+          </div>
         </div>
       </div>
     </div>
@@ -27,6 +32,7 @@
 
     <div id="todolist" v-show="isopen">
     <h1>{{title}}</h1>
+    <h2 class="back1" v-on:click="closenote"> < Back</h2>
     <input class="text1" type="text" v-model="newitem" v-on:keyup.enter="additem()"/>
     <div class="label1" v-for="item in items" v-bind:class="{FinC:item.isFinished}" v-on:click="finishitem(item)">
         {{item.label}}
@@ -85,6 +91,14 @@ export default {
     delall:function(){
       Store.clear()
       this.items=[]
+    },
+    opennote:function(noteitem){
+      this.isopen=true
+      console.log(noteitem.label)
+      this.items=Store.fetch(noteitem.label)
+    },
+    closenote:function(){
+      this.isopen=false
     }
   },
   watch:{
@@ -143,8 +157,20 @@ export default {
   width:180px;
   height:200px;
   float:left;
-  border:1px none;
+  border: none;
+  border-radius: 0.3em;
   margin-left:15px;
   box-shadow:8px 8px 4px #c7c7c7;
+}
+.box2{
+
+}
+.fin-w{
+  font-size:20px;
+  color:#ff4500;
+  font-weight:bold;
+}
+.back1{
+  cursor:default;
 }
 </style>
