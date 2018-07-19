@@ -20,7 +20,7 @@
       </div>
       <!--添加笔记本-->
       <div class="addnote" v-on:click="addnotefunc">
-        <p class="addnotep">+</p>
+        <p class="addnotep">new</p>
       </div>
       
   
@@ -77,7 +77,6 @@ export default {
       noteitems:Store.fetchnote(),
       thisnoteitem:'',
       thisnote:''
-
     }
   },
   methods:{
@@ -126,7 +125,6 @@ export default {
   watch:{
     items:{
       handler:function(items){          //监视条目变化，将条目变化存入storage
-        console.log(this.thisnoteitem)
         Store.save(items,this.thisnoteitem)
       },
       deep:true
@@ -185,7 +183,8 @@ export default {
   border-radius: 0.3em;
   margin-left:15px;
   margin-top:8px;
-  box-shadow:8px 8px 4px #c7c7c7;
+  box-shadow: 8px 8px 60px 1px #c7c7c7;
+  
 }
 .box2{   /*当笔记内事件全部完成时的样式*/
 
@@ -199,7 +198,8 @@ export default {
   cursor:default;
 }
 .addnote{   /*添加笔记框的样式*/
-  background-color: #f1f1f1;
+  background-color: #ff4500;
+  color:#f1f1f1;
   width:180px;
   height:200px;
   float:left;
@@ -207,12 +207,12 @@ export default {
   border-radius: 0.3em;
   margin-left:15px;
   margin-top:8px;
-  box-shadow:8px 8px 4px #c7c7c7;
+  box-shadow:   8px 8px 60px 1px #ff9966;
   cursor: default;
 }
 .addnotep{ /*添加笔记框的下一层的样式*/
-  font-size:120px;
-  margin-top:34px;
+  font-size:50px;
+  margin-top:54px;
 }
 .fade-enter-active, .fade-leave-active{
   transition: opacity 1s
