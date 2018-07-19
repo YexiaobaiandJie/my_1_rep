@@ -139,7 +139,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -161,6 +162,8 @@ export default {
 .label1{         /*事件条目默认样式*/
   font-size:22px;
   width:50.3%;
+  height:30px;
+  line-height:30px;
   margin-left:24.9%;
   text-align: center;
   background:#f1f1f1;
@@ -215,7 +218,7 @@ export default {
   margin-top:54px;
 }
 .fade-enter-active, .fade-leave-active{
-  transition: opacity 1s
+  transition: opacity 0.7s
 }
 .fade-enter, .fade-leave-to{
   opacity: 0

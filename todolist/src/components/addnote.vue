@@ -1,6 +1,6 @@
 <template>
     <div class="logtext1">
-        <div style="line-heigh:82px;font-size:28px;">NEW NOTE</div>
+        <div style="line-heigh:82px;font-size:28px;margin-top:10px;">NEW NOTE</div>
         <br />
         <div class="logtext1d">
             <span>event name</span>
@@ -12,7 +12,6 @@
         </div>
         <br />
         <button class="btncr" v-on:click="cre_note">create</button>
-        <br />
         <br />
         <br />
     </div>
@@ -51,7 +50,7 @@ export default {
         margin-top:10%;
         margin-left:33%;
         background-color:#6b6260;
-        position:relative;
+        position: absolute;
         z-index:10;
         border-radius: 0.5em;
         color:lemonchiffon;
@@ -59,15 +58,17 @@ export default {
     }
     .logtext1d{
         font-size:18px;
+        margin-left:5px;
+        margin-right:10px;
     }
     .logtext2d{
         font-size:18px;
         margin-top:15px;
-        margin-left:-24%;
+        margin-left:-20%;
     }
     .input1{
         font-size:17px;
-        width:300px;
+        width:250px;
         height:23px;
     }
     .input2{
