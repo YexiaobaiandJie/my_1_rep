@@ -19,12 +19,18 @@
         </div>
       </div>
       <!--添加笔记本-->
-      <div class="addnote">
+      <div class="addnote" v-on:click="addnotefunc">
         <p class="addnotep">+</p>
       </div>
+      
+  
     </div>
-
-
+    <transition name="fade">
+      <div v-show="createnote">
+        <Addnote v-on:getNoteInfo="getNoteInfo"></Addnote>
+       <!--<Addnote></Addnote>-->
+      </div>
+    </transition>
 
 
 
@@ -35,7 +41,7 @@
 
 
     <div id="todolist" v-show="isopen">  <!--清单页-->
-    <h1>{{title}}</h1>
+    <h1>{{title}} of {{thisnoteitem}}</h1>
     <h2 class="back1" v-on:click="closenote"> < Back</h2>
     <input class="text1" type="text" v-model="newitem" v-on:keyup.enter="additem()"/>
     <div class="label1" v-for="item in items" v-bind:class="{FinC:item.isFinished}" v-on:click="finishitem(item)">
@@ -50,35 +56,25 @@
 <script>
 import HelloWorld from './components/HelloWorld'
 import Store from './components/store'
+import Addnote from './components/addnote'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,Addnote
   },
   data(){
     return{
-      title:'TODOLIST',
+      title:'list',
       value:'',
       items:[],
       newitem:'',
+      newnoteinfo:{
+        label:'',
+        time:''
+      },
       isopen:false,
-      noteitems:[
-        {
-          label:'meeting',
-          time:'2017-9-18',
-          isFinished:false
-        },
-        {
-          label:'go home',
-          time:'2018-11-10',
-          isFinished:false
-        },
-        {
-          label:'visit',
-          time:'2018-10-19',
-          isFinished:false
-        }
-      ],
+      createnote:false,
+      noteitems:[],
       thisnoteitem:'',
       thisnote:''
 
@@ -95,7 +91,14 @@ export default {
       })
       this.newitem=''
     },
-
+    crNewNote:function(){       //将笔记数据放入笔记数组中，使其能够在笔记展示显示出来
+      this.noteitems.push({
+        label:this.newnoteinfo.label,
+        time:this.newnoteinfo.time,
+        isFinished:false
+      })
+      this.createnote=false
+    },
     delall:function(){                 //点击删除按钮，删除当前笔记里全部事件条目
       Store.remove(this.thisnote)
       this.items=[]
@@ -108,8 +111,18 @@ export default {
     },
     closenote:function(){              //点击返回退出笔记，回到笔记展览状态
       this.isopen=false
+    },
+    addnotefunc:function(){           //点击增加笔记，弹出输入框
+      this.createnote=true
+     },
+    getNoteInfo:function(noteinfo){    //从子组件那获得新创建的笔记的信息
+      this.newnoteinfo.label=noteinfo.label
+      this.newnoteinfo.time=noteinfo.time
+      this.crNewNote()
     }
+    
   },
+   
   watch:{
     items:{
       handler:function(items){          //监视条目变化，将条目变化存入storage
@@ -195,9 +208,16 @@ export default {
   margin-left:15px;
   margin-top:8px;
   box-shadow:8px 8px 4px #c7c7c7;
+  cursor: default;
 }
-.addnotep{
+.addnotep{ /*添加笔记框的下一层的样式*/
   font-size:120px;
   margin-top:34px;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: opacity 1s
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0
 }
 </style>
