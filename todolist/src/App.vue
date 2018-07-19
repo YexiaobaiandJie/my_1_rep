@@ -55,7 +55,7 @@ export default {
     return{
       title:'TODOLIST',
       value:'',
-      items:Store.fetch(),
+      items:[],
       newitem:'',
       isopen:false,
       noteitems:[
@@ -74,7 +74,8 @@ export default {
           time:'2018-10-19',
           isFinished:true
         }
-      ]
+      ],
+      thisnote:''
     }
   },
   methods:{
@@ -89,12 +90,13 @@ export default {
       this.newitem=''
     },
     delall:function(){
-      Store.clear()
+      Store.remove(this.thisnote)
       this.items=[]
     },
     opennote:function(noteitem){
       this.isopen=true
       console.log(noteitem.label)
+      this.thisnote=noteitem.label
       this.items=Store.fetch(noteitem.label)
     },
     closenote:function(){
@@ -104,7 +106,8 @@ export default {
   watch:{
     items:{
       handler:function(items){
-        Store.save(items)
+        console.log(this.thisnote)
+        Store.save(items,this.thisnote)
       },
       deep:true
     }

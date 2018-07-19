@@ -3,10 +3,10 @@ export default{
     fetch: function(key){
         return JSON.parse(window.localStorage.getItem(key) || '[]')
     },
-    save: function(items){
-        window.localStorage.setItem(STORAGE_KEY,JSON.stringify(items))
+    save: function(items,key){
+        window.localStorage.setItem(key,JSON.stringify(items))
     },
-    clear:function(){
-        window.localStorage.clear(STORAGE_KEY)
+    remove:function(key){
+        window.localStorage.removeItem(key)
     }
 }
