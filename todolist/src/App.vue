@@ -27,7 +27,7 @@
     </div>
     <transition name="fade">
       <div v-show="createnote">
-        <Addnote v-on:getNoteInfo="getNoteInfo"></Addnote>
+        <Addnote v-on:getNoteInfo="getNoteInfo" v-bind:createnote="createnote"></Addnote>
        <!--<Addnote></Addnote>-->
       </div>
     </transition>
@@ -118,8 +118,13 @@ export default {
       this.newnoteinfo.label=noteinfo.label
       this.newnoteinfo.time=noteinfo.time
       this.crNewNote()
+    },
+    Changelogs:function(createnote){
+      this.createnote=false
+    },
+    ChangeCreatenoteStatue:function(){
+      this.createnote=false
     }
-    
   },
    
   watch:{
@@ -218,7 +223,7 @@ export default {
   margin-top:54px;
 }
 .fade-enter-active, .fade-leave-active{
-  transition: opacity 0.7s
+  transition: opacity 0.6s
 }
 .fade-enter, .fade-leave-to{
   opacity: 0

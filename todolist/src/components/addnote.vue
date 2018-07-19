@@ -12,6 +12,7 @@
         </div>
         <br />
         <button class="btncr" v-on:click="cre_note">create</button>
+        <button class="btncr" v-on:click="closelog">cancel</button>
         <br />
         <br />
     </div>
@@ -19,7 +20,9 @@
 
 <script>
 export default {
-   data(){
+
+    
+    data(){
        return{
             evname:'',
             statime:'',
@@ -28,7 +31,6 @@ export default {
                     label:'',
                     time:''
                 }
-            
        }
    },
    methods:{
@@ -38,6 +40,9 @@ export default {
            this.$emit('getNoteInfo', this.noteinfo)
            this.evname=''
            this.statime=''
+       },
+       closelog:function(){
+           this.$parent.ChangeCreatenoteStatue()
        }
    }
     
@@ -48,13 +53,13 @@ export default {
     .logtext1{
         max-width:500px;
         margin-top:10%;
-        margin-left:33%;
+        margin-left:38%;
         background-color:#6b6260;
         position: absolute;
         z-index:10;
         border-radius: 0.5em;
         color:lemonchiffon;
-        transition:ease 1s;
+        
     }
     .logtext1d{
         font-size:18px;
