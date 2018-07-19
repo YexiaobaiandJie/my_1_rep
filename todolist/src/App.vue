@@ -74,7 +74,7 @@ export default {
       },
       isopen:false,
       createnote:false,
-      noteitems:[],
+      noteitems:Store.fetchnote(),
       thisnoteitem:'',
       thisnote:''
 
@@ -133,7 +133,7 @@ export default {
     },
     noteitems:{
       handler:function(noteitems){
-        Store.save(noteitems,NOTE_KEY)
+        Store.savenote(noteitems)
       },
       deep:true
     }
