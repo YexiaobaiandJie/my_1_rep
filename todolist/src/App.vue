@@ -31,7 +31,7 @@
     </div>
     <transition name="fade">
       <div v-show="createnote">
-        <Addnote v-on:getNoteInfo="getNoteInfo" v-bind:createnote="createnote"></Addnote>
+        <Addnote v-on:getNoteInfo="getNoteInfo" v-bind:createnote="createnote"  v-bind:parnoteitems="noteitems"></Addnote>
        <!--<Addnote></Addnote>-->
       </div>
     </transition>
@@ -126,10 +126,7 @@ export default {
       this.newnoteinfo.time=noteinfo.time
       this.crNewNote()
     },
-    Changelogs:function(createnote){
-      this.createnote=false
-    },
-    ChangeCreatenoteStatue:function(){
+    ChangeCreatenoteStatue:function(){       //改变新增笔记框的状态 隐藏新增笔记框
       this.createnote=false
     }
   },

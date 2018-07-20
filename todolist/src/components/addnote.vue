@@ -21,7 +21,12 @@
 
 <script>
 export default {
-    
+    props:{
+        parnoteitems:{
+            type:Array,
+            required:true
+        }
+    },
     data(){
        return{
             evname:'',
@@ -35,12 +40,25 @@ export default {
    },
    methods:{
        cre_note:function(){
-           this.noteinfo.label=this.evname
-           this.noteinfo.time=this.statime
-           this.$emit('getNoteInfo', this.noteinfo)
-           this.evname=''
-           this.statime='2018-07-20'
-       },
+           var count=0
+           for(var i=0;i<this.parnoteitems.length;i++){
+               if(this.evname===this.parnoteitems[i].label){
+                   count++;
+                   break;
+               }
+           }
+           if(count===0){
+                this.noteinfo.label=this.evname
+                this.noteinfo.time=this.statime
+                this.$emit('getNoteInfo', this.noteinfo)
+                this.evname=''
+                this.statime='2018-07-20'
+           }else{
+               this.evname=''
+               this.statime='2017-07-20'
+               alert("name already exists")
+           }
+        },
        closelog:function(){
            this.$parent.ChangeCreatenoteStatue()
        }
