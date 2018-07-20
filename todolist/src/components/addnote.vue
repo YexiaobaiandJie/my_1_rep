@@ -2,12 +2,13 @@
     <div class="logtext1">
         <div style="line-heigh:82px;font-size:28px;margin-top:10px;">NEW NOTE</div>
         <br />
+        
         <div class="logtext1d">
-            <span>event name</span>
+            <span>name</span>
             <input class="input1" type="text" v-model="evname"/>
         </div>
         <div class="logtext2d">
-            <span>start time</span>
+            <span>time</span>
             <input class="input2" type="date" value="" v-model="statime"/>
         </div>
         <br />
@@ -15,7 +16,7 @@
         <button class="btncr" v-on:click="closelog">cancel</button>
         <br />
         <br />
-    </div>
+    </div> 
 </template>
 
 <script>
@@ -51,9 +52,19 @@ export default {
 
 <style>
     .logtext1{
-        max-width:500px;
-        margin-top:10%;
-        margin-left:38%;
+        max-width:270px;
+        max-height:200px;
+        min-width:250px;
+        min-height:190px;
+        width:27%;
+        height:40%;
+        top: 50%;   
+        left: 50%;   
+        -webkit-transform: translate(-50%, -50%);   
+        -moz-transform: translate(-50%, -50%);   
+        -ms-transform: translate(-50%, -50%);   
+        -o-transform: translate(-50%, -50%);   
+        transform: translate(-50%, -50%);  
         background-color:#6b6260;
         position: absolute;
         z-index:10;
@@ -62,21 +73,22 @@ export default {
         
     }
     .logtext1d{
-        font-size:18px;
-        margin-left:5px;
+        font-size:15px;
+        margin-left:-10%;
         margin-right:10px;
     }
     .logtext2d{
-        font-size:18px;
+        font-size:15px;
         margin-top:15px;
-        margin-left:-20%;
+        margin-left:-11%;
     }
     .input1{
         font-size:17px;
-        width:250px;
+        width:52%;
         height:23px;
     }
     .input2{
+        
         height:23px;
         font-size:17px;
     }

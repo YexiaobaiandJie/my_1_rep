@@ -6,8 +6,7 @@
       <hr />
       <div v-for="noteitem in noteitems" v-on:click="opennote(noteitem)">
         <div class="box1" v-bind:class="{box2:noteitem.isFinished}">
-          <img src="./assets/logo.png" style="width:145px;height:145px;">
-          <br />
+          <img src="./assets/logo.png" style="width:90%;height:70%;">
             {{noteitem.label}}
           <br />
           <div v-show="!noteitem.isFinished">
@@ -16,11 +15,13 @@
           <div v-show="noteitem.isFinished" class="fin-w">
             completed 
           </div>
+          
         </div>
       </div>
       <!--添加笔记本-->
       <div class="addnote" v-on:click="addnotefunc">
         <p class="addnotep">new</p>
+        <p class="addnotep2">note</p>
       </div>
       
   
@@ -184,8 +185,10 @@ export default {
 }
 .box1{      /*笔记框样式*/
   background-color: #f1f1f1;
-  width:180px;
-  height:200px;
+  width:43%;
+  height:23%;
+  max-width:180px;
+  max-height:200px;
   float:left;
   border: none;
   border-radius: 0.3em;
@@ -205,11 +208,14 @@ export default {
 .back1{    /*返回 笔记展示模块 标签的样式*/
   cursor:default;
 }
+
 .addnote{   /*添加笔记框的样式*/
   background-color: #ff4500;
   color:#f1f1f1;
-  width:180px;
-  height:200px;
+  width:43%;
+  height:23%;
+  max-width:180px;
+  max-height:200px;
   float:left;
   border: none;
   border-radius: 0.3em;
@@ -220,7 +226,12 @@ export default {
 }
 .addnotep{ /*添加笔记框的下一层的样式*/
   font-size:50px;
-  margin-top:54px;
+  margin-top:20%;
+}
+.addnotep2{ /*添加笔记框的下一层的样式*/
+  font-size:50px;
+  margin-top:-34%;
+  margin-bottom:34%;
 }
 .fade-enter-active, .fade-leave-active{
   transition: opacity 0.6s
