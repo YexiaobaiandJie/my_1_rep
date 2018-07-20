@@ -39,7 +39,7 @@ export default {
            this.noteinfo.time=this.statime
            this.$emit('getNoteInfo', this.noteinfo)
            this.evname=''
-           this.statime=''
+           this.statime='2018-07-20'
        },
        closelog:function(){
            this.$parent.ChangeCreatenoteStatue()

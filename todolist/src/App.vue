@@ -5,18 +5,21 @@
       <h1>list of note</h1>
       <button v-on:click="addnotefunc" class="newnotep">new</button>
       <hr />
-      <div v-for="noteitem in noteitems" v-on:click="opennote(noteitem)">
-        <div class="box1" v-bind:class="{box2:noteitem.isFinished}">
-          <img src="./assets/logo.png" style="width:90%;height:70%;">
-            {{noteitem.label}}
-          <br />
-          <div v-show="!noteitem.isFinished">
-            {{noteitem.time}}
+      <div style="margin-left:2.8%">
+        <div v-for="noteitem in noteitems" v-on:click="opennote(noteitem)">
+          <div class="box1" v-bind:class="{box2:noteitem.isFinished}">
+            <img src="./assets/logo.png" style="width:90%;height:70%;">
+            <br />
+              {{noteitem.label}}
+            <br />
+            <div v-show="!noteitem.isFinished">
+              {{noteitem.time}}
+            </div>
+            <div v-show="noteitem.isFinished" class="fin-w">
+              completed 
+            </div>
+            
           </div>
-          <div v-show="noteitem.isFinished" class="fin-w">
-            completed 
-          </div>
-          
         </div>
       </div>
       <!--添加笔记本-->
@@ -190,12 +193,12 @@ export default {
   background-color: #f1f1f1;
   width:43%;
   height:23%;
-  max-width:180px;
-  max-height:200px;
+  max-width:160px;
+  max-height:190px;
   float:left;
   border: none;
   border-radius: 0.3em;
-  margin-left:15px;
+  margin-left:17px;
   margin-top:8px;
   box-shadow: 8px 8px 60px 1px #c7c7c7;
   
