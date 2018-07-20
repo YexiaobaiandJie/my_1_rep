@@ -21,12 +21,11 @@
 
 <script>
 export default {
-
     
     data(){
        return{
             evname:'',
-            statime:'',
+            statime:'2018-07-20',
             noteinfo:
                 {
                     label:'',

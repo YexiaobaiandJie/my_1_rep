@@ -25,7 +25,6 @@
         <p class="addnotep">new</p>
       </div>
       -->
-  
     </div>
     <transition name="fade">
       <div v-show="createnote">
@@ -50,7 +49,7 @@
         {{item.label}}
         
     </div>
-    <p class="del1" v-bind:class="{delp:items.length===0}" v-on:click="delall"> delete-all </p>
+    <p class="del1" v-bind:class="{delp:items.length===0}" v-on:click="delall"> delete-note </p>
     </div>
   </div>
 </template>
@@ -103,6 +102,9 @@ export default {
     delall:function(){                 //点击删除按钮，删除当前笔记里全部事件条目
       Store.remove(this.thisnote)
       this.items=[]
+      Store.removenote(this.thisnote.label)
+      this.isopen=false
+      this.noteitems=Store.fetchnote()
     },
     opennote:function(noteitem){       //点击笔记，进入笔记调出当前笔记所有内容
       this.isopen=true
