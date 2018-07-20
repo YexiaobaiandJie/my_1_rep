@@ -3,6 +3,7 @@
     <!--<img src="./assets/logo.png">-->
     <div id="notebook" v-show="!isopen"> <!--笔记本展示页-->
       <h1>list of note</h1>
+      <button v-on:click="addnotefunc" class="newnotep">new</button>
       <hr />
       <div v-for="noteitem in noteitems" v-on:click="opennote(noteitem)">
         <div class="box1" v-bind:class="{box2:noteitem.isFinished}">
@@ -19,11 +20,11 @@
         </div>
       </div>
       <!--添加笔记本-->
+      <!--
       <div class="addnote" v-on:click="addnotefunc">
         <p class="addnotep">new</p>
-        <p class="addnotep2">note</p>
       </div>
-      
+      -->
   
     </div>
     <transition name="fade">
@@ -209,34 +210,16 @@ export default {
   cursor:default;
 }
 
-.addnote{   /*添加笔记框的样式*/
-  background-color: #ff4500;
-  color:#f1f1f1;
-  width:43%;
-  height:23%;
-  max-width:180px;
-  max-height:200px;
-  float:left;
-  border: none;
-  border-radius: 0.3em;
-  margin-left:15px;
-  margin-top:8px;
-  box-shadow:   8px 8px 60px 1px #ff9966;
-  cursor: default;
-}
-.addnotep{ /*添加笔记框的下一层的样式*/
-  font-size:50px;
-  margin-top:20%;
-}
-.addnotep2{ /*添加笔记框的下一层的样式*/
-  font-size:50px;
-  margin-top:-34%;
-  margin-bottom:34%;
-}
 .fade-enter-active, .fade-leave-active{
   transition: opacity 0.6s
 }
 .fade-enter, .fade-leave-to{
   opacity: 0
+}
+.newnotep{
+  font-size:21px;
+  cursor:default;
+  background-color:#cfcfcf;
+  border:none;
 }
 </style>
