@@ -3,6 +3,7 @@
     <!--<img src="./assets/logo.png">-->
     <div id="notebook" v-show="!isopen"> <!--笔记本展示页-->
       <h1>list of note</h1>
+      
       <button v-on:click="addnotefunc" class="newnotep">new</button>
       <hr />
       <div style="margin-left:2.8%">
@@ -46,7 +47,7 @@
 
     <div id="todolist" v-show="isopen">  <!--清单页-->
     <h1>{{title}} of {{thisnoteitem}}</h1>
-    <h2 class="back1" v-on:click="closenote"> < Back</h2>
+    <h3 class="back1" v-on:click="closenote"> return</h3>
     <input class="text1" type="text" v-model="newitem" v-on:keyup.enter="additem()"/>
     <div class="label1" v-for="item in items" v-bind:class="{FinC:item.isFinished}" v-on:click="finishitem(item)">
         {{item.label}}
@@ -62,6 +63,7 @@ import HelloWorld from './components/HelloWorld'
 import Store from './components/store'
 import Addnote from './components/addnote'
 export default {
+  
   name: 'App',
   components: {
     HelloWorld,Addnote
@@ -114,6 +116,7 @@ export default {
       this.thisnote=noteitem
       this.thisnoteitem=noteitem.label
       this.items=Store.fetch(noteitem.label)
+      
     },
     closenote:function(){              //点击返回退出笔记，回到笔记展览状态
       this.isopen=false

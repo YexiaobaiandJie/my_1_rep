@@ -5,11 +5,11 @@
         
         <div class="logtext1d">
             <span>name</span>
-            <input class="input1" type="text" v-model="evname"/>
+            <input class="input1" type="text" v-model="evname" v-on:keyup.enter="cre_note"/>
         </div>
         <div class="logtext2d">
             <span>time</span>
-            <input class="input2" type="date" value="" v-model="statime"/>
+            <input class="input2" type="date" value="" v-model="statime" v-on:keyup.enter="cre_note"/>
         </div>
         <br />
         <button class="btncr" v-on:click="cre_note">create</button>
@@ -41,22 +41,31 @@ export default {
    methods:{
        cre_note:function(){
            var count=0
-           for(var i=0;i<this.parnoteitems.length;i++){
-               if(this.evname===this.parnoteitems[i].label){
-                   count++;
-                   break;
-               }
+           if(this.evname===''){
+               alert("name should not be empty")
            }
-           if(count===0){
-                this.noteinfo.label=this.evname
-                this.noteinfo.time=this.statime
-                this.$emit('getNoteInfo', this.noteinfo)
-                this.evname=''
-                this.statime='2018-07-20'
-           }else{
-               this.evname=''
-               this.statime='2017-07-20'
-               alert("name already exists")
+           else{
+                for(var i=0;i<this.parnoteitems.length;i++){
+                    if(this.evname===this.parnoteitems[i].label){
+                        count++;
+                        break;
+                    }
+                }
+                if(count===0){
+                        this.noteinfo.label=this.evname
+                        this.noteinfo.time=this.statime
+                        
+                        if(this.noteinfo.time==='')
+                            this.noteinfo.time='2018-07-20'
+                        
+                        this.$emit('getNoteInfo', this.noteinfo)
+                        this.evname=''
+                        this.statime='2018-07-20'
+                }else{
+                    this.evname=''
+                    this.statime='2018-07-20'
+                    alert("name already exists")
+                }
            }
         },
        closelog:function(){
