@@ -1,13 +1,13 @@
 package main
 
 import(
-	"fmt"
+	//"fmt"
 	
 	"io/ioutil"
 	"net/http"
 	//"os"
 	"encoding/json"
-	//"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2"
 	//"gopkg.in/mgo.v2/bson"
 )
 
@@ -51,18 +51,29 @@ func main(){
 	json.Unmarshal(body, &s)
 	//stdout :=os.Stdout
 	//_,err = io.Copy(stdout,response.Body)
-	fmt.Println(s.TotalItems)
-	fmt.Println(s.Data[0].Summary)
-	/*将数据导入数据库
-	session,err :=mgo.Dial(localhost)
+	//fmt.Println(s.TotalItems)
+	//fmt.Println(s.Data[0].Summary)
+	//将数据导入数据库
+	session,err :=mgo.Dial("localhost")
 	if err !=nil{
 		panic(err)
 	}
 	defer session.Close()
 	session.SetMode(mgo.Monotonic,true)
 	c:=session.DB("foxinfo").C("info")
-	err = c.Insert(&person{""
-	})*/
-
+	for a:=0;a<20;a++{
+		err = c.Insert(&Info{
+			s.Data[a].AuthorName,
+			s.Data[a].Id,
+			s.Data[a].Language,
+			s.Data[a].MobileUrl,
+			s.Data[a].PublishDate,
+			s.Data[a].SiteName,
+			s.Data[a].Summary,
+			s.Data[a].SummaryAuto,
+			s.Data[a].Title,
+			s.Data[a].Url,
+		})
+	}
 
 }
