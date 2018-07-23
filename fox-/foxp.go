@@ -1,8 +1,8 @@
 package main
 
 import(
-	//"fmt"
-	
+	"fmt"
+	"time"
 	"io/ioutil"
 	"net/http"
 	//"os"
@@ -34,7 +34,15 @@ type Comp struct{
 }
 
 func main(){
+	tick := time.Tick(1 * time.Minute)
+      for _ = range tick {
+            reptile()
+      }
+}
+
+func reptile (){
 	//发送请求，接受请求
+	fmt.Println("执行")
 	client :=&http.Client{}
 
 	url :="https://api.readhub.me/blockchain?pageSize=20"
@@ -75,5 +83,4 @@ func main(){
 			s.Data[a].Url,
 		})
 	}
-
 }
