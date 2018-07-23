@@ -24,18 +24,17 @@ type Info struct{
 	Url  		string	`json:"url"`
 }
 
-type Infoslice struct{
-	Infos []Info
-}
+type Infos []Info
 
 type Comp struct{
-	Data 		Infoslice `json:"data"`
+	Data 		Infos 	  `json:"data"`
 	PageSize 	int		  `json:"pageSize"`
 	TotalItems 	int 	  `json:"totalitems"`
 	TotalPages  int   	  `json:"totalpages"`
 }
 
 func main(){
+	//发送请求，接受请求
 	client :=&http.Client{}
 
 	url :="https://api.readhub.me/blockchain?pageSize=20"
@@ -45,6 +44,7 @@ func main(){
 	if err !=nil{
 		panic(err)
 	}
+	//将数据放入结构体
 	var s Comp
 	response,_ :=client.Do(reqest)
 	body,err :=ioutil.ReadAll(response.Body)
@@ -52,5 +52,17 @@ func main(){
 	//stdout :=os.Stdout
 	//_,err = io.Copy(stdout,response.Body)
 	fmt.Println(s.TotalItems)
-	
+	fmt.Println(s.Data[0].Summary)
+	/*将数据导入数据库
+	session,err :=mgo.Dial(localhost)
+	if err !=nil{
+		panic(err)
+	}
+	defer session.Close()
+	session.SetMode(mgo.Monotonic,true)
+	c:=session.DB("foxinfo").C("info")
+	err = c.Insert(&person{""
+	})*/
+
+
 }
