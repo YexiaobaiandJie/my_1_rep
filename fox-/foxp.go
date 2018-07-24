@@ -3,13 +3,18 @@ package main
 import(
 	"fmt"
 	"time"
-	"io/ioutil"
-	"net/http"
 	//"os"
+	"net/http"
+	"io/ioutil"
 	"encoding/json"
 	"gopkg.in/mgo.v2"
 	//"gopkg.in/mgo.v2/bson"
+	//"io"
+	//"bufio"
+	"strconv"
 )
+var newid string
+var temp string
 
 type Info struct{
 	AuthorName 	string 	`json:"authorName"`
@@ -34,15 +39,36 @@ type Comp struct{
 }
 
 func main(){
-	tick := time.Tick(1 * time.Minute)
+	
+	
+
+
+
+
+
+
+	fmt.Println("开始")
+	
+	
+	tick := time.Tick(time.Millisecond*20000)
       for _ = range tick {
             reptile()
-      }
+	  }
+
 }
 
 func reptile (){
+	//读取最新数据的id
+	fmt.Println("--------------------------时隔20s，重新抓取--------------------------")
+	b, err := ioutil.ReadFile("newid.txt")
+    if err != nil {
+        fmt.Print(err)
+    }
+	newid= string(b)
+	fmt.Println("当前最新新闻id为"+newid)
+
 	//发送请求，接受请求
-	fmt.Println("执行")
+	//fmt.Println("时隔10s，开始爬行")
 	client :=&http.Client{}
 
 	url :="https://api.readhub.me/blockchain?pageSize=20"
@@ -56,6 +82,7 @@ func reptile (){
 	var s Comp
 	response,_ :=client.Do(reqest)
 	body,err :=ioutil.ReadAll(response.Body)
+	//!!!!!!!!!!!!!!!!!!!!!!!!!这里记得要关掉response.Body!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	json.Unmarshal(body, &s)
 	//stdout :=os.Stdout
 	//_,err = io.Copy(stdout,response.Body)
@@ -69,18 +96,40 @@ func reptile (){
 	defer session.Close()
 	session.SetMode(mgo.Monotonic,true)
 	c:=session.DB("foxinfo").C("info")
-	for a:=0;a<20;a++{
-		err = c.Insert(&Info{
-			s.Data[a].AuthorName,
-			s.Data[a].Id,
-			s.Data[a].Language,
-			s.Data[a].MobileUrl,
-			s.Data[a].PublishDate,
-			s.Data[a].SiteName,
-			s.Data[a].Summary,
-			s.Data[a].SummaryAuto,
-			s.Data[a].Title,
-			s.Data[a].Url,
-		})
+	a:=0
+	for a=0;a<20;a++{
+		thisid:=strconv.Itoa(s.Data[a].Id)
+		if a==0 {
+			temp=thisid
+			
+		}
+		if(thisid==newid){
+			fmt.Println("此次抓取已停止")
+			break
+		}else{
+				fmt.Println("a=",a)
+					err = c.Insert(&Info{
+						s.Data[a].AuthorName,
+						s.Data[a].Id,
+						s.Data[a].Language,
+						s.Data[a].MobileUrl,
+						s.Data[a].PublishDate,
+						s.Data[a].SiteName,
+						s.Data[a].Summary,
+						s.Data[a].SummaryAuto,
+						s.Data[a].Title,
+						s.Data[a].Url,
+					})	
+				fmt.Println("存入一条数据")
+		}	
 	}
+	if a==20{
+		fmt.Println("API返回数据全部为新数据，已全部存入数据库")
+	}
+	//将新的最新新闻id存入文件
+	d1 :=[]byte(temp)
+
+	ioutil.WriteFile("newid.txt",d1,0644)
+	
+	fmt.Println("---------------------》》最新新闻id为"+temp+"《《----------------------")
 }
