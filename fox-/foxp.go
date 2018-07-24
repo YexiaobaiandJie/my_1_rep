@@ -81,13 +81,12 @@ func reptile (){
 	//将数据放入结构体
 	var s Comp
 	response,_ :=client.Do(reqest)
+	defer response.Body.Close()
 	body,err :=ioutil.ReadAll(response.Body)
-	//!!!!!!!!!!!!!!!!!!!!!!!!!这里记得要关掉response.Body!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+
 	json.Unmarshal(body, &s)
-	//stdout :=os.Stdout
-	//_,err = io.Copy(stdout,response.Body)
-	//fmt.Println(s.TotalItems)
-	//fmt.Println(s.Data[0].Summary)
+	
 	//将数据导入数据库
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
