@@ -6,6 +6,7 @@ import(
 	"log"
 	"gopkg.in/mgo.v2"
 	"github.com/gorilla/mux"
+	"encoding/json"
 )
 
 type Info struct{
@@ -44,7 +45,11 @@ func firstIndex(w http.ResponseWriter,r *http.Request){
 	c :=db.C("info")
 	c.Find(nil).Sort("-publishdate").Limit(10).All(&infos)
 	w.Header().Set("Content-type","application/json")
-	fmt.Fprintln(w,infos)
+	jsons,err :=json.Marshal(infos)
+	if err !=nil{
+		panic(err)
+	}
+	fmt.Fprintln(w,string(jsons))
 }
 
 func secondIndex(w http.ResponseWriter,r *http.Request){
@@ -57,5 +62,9 @@ func secondIndex(w http.ResponseWriter,r *http.Request){
 	c :=db.C("info")
 	c.Find(nil).Sort("-publishdate").Limit(10).Skip(10).All(&infos)
 	w.Header().Set("Content-type","application/json")
-	fmt.Fprintln(w,infos)
+	jsons,err :=json.Marshal(infos)
+	if err !=nil{
+		panic(err)
+	}
+	fmt.Fprintln(w,string(jsons))
 }
