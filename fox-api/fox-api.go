@@ -3,10 +3,9 @@ package main
 import(
 	"net/http"
 	"fmt"
-	"html"
 	"log"
 	"gopkg.in/mgo.v2"
-	//"gopkg.in/mgo.v2/bson"
+	"github.com/gorilla/mux"
 )
 
 type Info struct{
@@ -23,7 +22,19 @@ type Info struct{
 }
 
 func main(){
-	//连接MongoDB服务器
+	router :=mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/",Index)
+	router.HandleFunc("/10",firstIndex)
+	router.HandleFunc("/20",secondIndex)
+	log.Fatal(http.ListenAndServe(":8080",router))
+}
+
+func Index(w http.ResponseWriter,r *http.Request){
+	w.Header().Set("Content-type","application/json;charset=utf-8")
+	fmt.Fprintf(w,"welcome!")
+}
+
+func firstIndex(w http.ResponseWriter,r *http.Request){
 	var infos []Info
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
@@ -32,9 +43,19 @@ func main(){
 	db :=session.DB("foxinfo")
 	c :=db.C("info")
 	c.Find(nil).Sort("-publishdate").Limit(10).All(&infos)
-	
-	http.HandleFunc("/",func(writer http.ResponseWriter,request *http.Request){
-		fmt.Fprintln(writer,infos,html.EscapeString(request.URL.Path))
-	})
-	log.Fatal(http.ListenAndServe(":8080",nil))
+	w.Header().Set("Content-type","application/json")
+	fmt.Fprintln(w,infos)
+}
+
+func secondIndex(w http.ResponseWriter,r *http.Request){
+	var infos []Info
+	session,err :=mgo.Dial("localhost")
+	if err !=nil{
+		panic(err)
+	}
+	db :=session.DB("foxinfo")
+	c :=db.C("info")
+	c.Find(nil).Sort("-publishdate").Limit(10).Skip(10).All(&infos)
+	w.Header().Set("Content-type","application/json")
+	fmt.Fprintln(w,infos)
 }
