@@ -47,9 +47,9 @@ func main(){
 	body,err :=ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
 	tick := time.Tick(time.Minute*13)
-      for _ = range tick {
+    for _ = range tick {
             reptile(body)
-	  }
+	}
 }
 
 func reptile (body []byte){
