@@ -25,32 +25,31 @@ type Info struct{
 }
 
 type user struct{
-	Userid int `json:"userid"`
-	Password int `json:"password"`
+	Userid string `json:"userid"`
+	Password string `json:"password"`
 }
 func main(){
 	router :=mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/news",Index)
+	router.HandleFunc("/register",RegisterPage)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
 
 func Index(w http.ResponseWriter,r *http.Request){
-	 var User []user
-	  userid :=r.URL.Query().Get("userid")
-	  userpwd :=r.URL.Query().Get("userpwd")
-	 value1 :=r.URL.Query().Get("pagesize")
-	userid2,err:=strconv.Atoi(userid)
-	   if err !=nil{
-	  	panic(err)
-	   }
-	 userpwd2,err:=strconv.Atoi(userpwd)
-	 value2,err:=strconv.Atoi(value1)
-	 session1,err :=mgo.Dial("localhost")
-	 db2 :=session1.DB("userinfo") 
-	 cu :=db2.C("usertable")
-	 cu.Find(bson.M{"userid":userid2}).All(&User)
+	var User []user
+	userid :=r.URL.Query().Get("userid")
+	userpwd :=r.URL.Query().Get("userpwd")
+	value1 :=r.URL.Query().Get("pagesize")
+	value2,err:=strconv.Atoi(value1)
+	if err !=nil{
+		panic(err)
+	}
+	session1,err :=mgo.Dial("localhost")
+	db2 :=session1.DB("userinfo") 
+	cu :=db2.C("usertable")
+	cu.Find(bson.M{"userid":userid}).All(&User)
 	
-	if userpwd2 ==	User[0].Password{
+	if userpwd ==	User[0].Password{
 		var infos []Info
 		session,err :=mgo.Dial("localhost")
 		if err !=nil{
@@ -71,3 +70,20 @@ func Index(w http.ResponseWriter,r *http.Request){
 	
 }
 
+func RegisterPage(w http.ResponseWriter,r *http.Request){
+	var User []user
+	newid :=r.URL.Query().Get("userid")
+	//newpwd :=r.URL.Query().Get("userpwd")
+	session,err :=mgo.Dial("localhost")
+	if err !=nil{
+		panic(err)
+	}
+	db :=session.DB("userinfo")
+	c :=db.C("usertable")
+	err=c.Find(bson.M{"userid":newid}).All(&User)
+
+	if User[0].Userid != ""{
+		fmt.Fprintln(w,"该userid已存在")
+	}
+		
+}
