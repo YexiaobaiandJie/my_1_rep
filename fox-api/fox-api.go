@@ -73,17 +73,18 @@ func Index(w http.ResponseWriter,r *http.Request){
 func RegisterPage(w http.ResponseWriter,r *http.Request){
 	var User []user
 	newid :=r.URL.Query().Get("userid")
-	//newpwd :=r.URL.Query().Get("userpwd")
+	newpwd :=r.URL.Query().Get("userpwd")
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
 		panic(err)
 	}
-	db :=session.DB("userinfo")
-	c :=db.C("usertable")
-	err=c.Find(bson.M{"userid":newid}).All(&User)
-
-	if User[0].Userid != ""{
+	db1 :=session.DB("userinfo")
+	c1 :=db1.C("usertable")
+	err=c1.Find(bson.M{"userid":newid}).All(&User)
+	if len(User) != 0{
 		fmt.Fprintln(w,"该userid已存在")
+	}else{
+		c1.Insert(&user{Userid:newid,Password:newpwd})
+		fmt.Fprintln(w,"注册成功")
 	}
-		
 }
