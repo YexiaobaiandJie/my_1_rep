@@ -26,14 +26,12 @@ type Info struct{
 
 func main(){
 	router :=mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/value={value}",Index)
+	router.HandleFunc("/news",Index)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
 
-
 func Index(w http.ResponseWriter,r *http.Request){
-	vars :=mux.Vars(r)
-	value1 :=vars["value"]
+	value1 :=r.URL.Query().Get("pagesize")
 	value2,err:=strconv.Atoi(value1)
 	var infos []Info
 	session,err :=mgo.Dial("localhost")
@@ -50,3 +48,4 @@ func Index(w http.ResponseWriter,r *http.Request){
 	}
 	fmt.Fprintln(w,string(jsons))
 }
+
