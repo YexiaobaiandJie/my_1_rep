@@ -6,7 +6,9 @@ import(
 	"log"
 	"gopkg.in/mgo.v2"
 	"github.com/gorilla/mux"
+	
 	"encoding/json"
+	"strconv"
 )
 
 type Info struct{
@@ -24,18 +26,15 @@ type Info struct{
 
 func main(){
 	router :=mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/",Index)
-	router.HandleFunc("/10",firstIndex)
-	router.HandleFunc("/20",secondIndex)
+	router.HandleFunc("/value={value}",Index)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
 
+
 func Index(w http.ResponseWriter,r *http.Request){
-	w.Header().Set("Content-type","application/json;charset=utf-8")
-	fmt.Fprintf(w,"welcome!")
-}
-
-func firstIndex(w http.ResponseWriter,r *http.Request){
+	vars :=mux.Vars(r)
+	value1 :=vars["value"]
+	value2,err:=strconv.Atoi(value1)
 	var infos []Info
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
@@ -43,24 +42,7 @@ func firstIndex(w http.ResponseWriter,r *http.Request){
 	}
 	db :=session.DB("foxinfo")
 	c :=db.C("info")
-	c.Find(nil).Sort("-publishdate").Limit(10).All(&infos)
-	w.Header().Set("Content-type","application/json")
-	jsons,err :=json.Marshal(infos)
-	if err !=nil{
-		panic(err)
-	}
-	fmt.Fprintln(w,string(jsons))
-}
-
-func secondIndex(w http.ResponseWriter,r *http.Request){
-	var infos []Info
-	session,err :=mgo.Dial("localhost")
-	if err !=nil{
-		panic(err)
-	}
-	db :=session.DB("foxinfo")
-	c :=db.C("info")
-	c.Find(nil).Sort("-publishdate").Limit(10).Skip(10).All(&infos)
+	c.Find(nil).Sort("-publishdate").Limit(value2).All(&infos)
 	w.Header().Set("Content-type","application/json")
 	jsons,err :=json.Marshal(infos)
 	if err !=nil{
