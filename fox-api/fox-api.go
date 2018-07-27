@@ -10,7 +10,6 @@ import(
 	"encoding/json"
 	"strconv"
 )
-
 type Info struct{
 	AuthorName 	string 	`json:"authorName"`
 	Id 			int	   	`json:"id"`
@@ -25,16 +24,29 @@ type Info struct{
 }
 
 type user struct{
-	Userid string `json:"userid"`
+	Userid 	 string `json:"userid"`
 	Password string `json:"password"`
 }
+
+type getuser struct{
+	Userid string    `json:"userid"`
+	Password string	 `json:"password"`
+	Id       bson.ObjectId `bson:"_id"`
+}
+//islogin :=false    
+				//false表示未登录
+				//true 表示登录
+
 func main(){
 	router :=mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/news",Index)
 	router.HandleFunc("/register",RegisterPage)
+	router.HandleFunc("/login",LoginPage)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
 
+
+//   /news
 func Index(w http.ResponseWriter,r *http.Request){
 	var User []user
 	userid :=r.URL.Query().Get("userid")
@@ -69,7 +81,7 @@ func Index(w http.ResponseWriter,r *http.Request){
 	}
 	
 }
-
+// register
 func RegisterPage(w http.ResponseWriter,r *http.Request){
 	var User []user
 	newid :=r.URL.Query().Get("userid")
@@ -86,5 +98,30 @@ func RegisterPage(w http.ResponseWriter,r *http.Request){
 	}else{
 		c1.Insert(&user{Userid:newid,Password:newpwd})
 		fmt.Fprintln(w,"注册成功")
+	}
+}
+
+// LoginPage
+func LoginPage(w http.ResponseWriter,r *http.Request){
+	var User []user
+	var getUser []getuser
+	
+	userid  :=r.URL.Query().Get("userid")
+	userpwd :=r.URL.Query().Get("userpwd")
+	session,err :=mgo.Dial("localhost")
+	if err !=nil{
+		panic(err)
+	}
+	db :=session.DB("userinfo")
+	c :=db.C("usertable")
+	c.Find(bson.M{"userid":userid}).All(&User)
+	c.Find(bson.M{"userid":userid}).Select(bson.M{"_id":1,"userid":1,"password":1}).All(&getUser)
+	
+	
+	if userpwd ==	User[0].Password{
+		fmt.Fprintln(w,"身份验证成功")
+		fmt.Fprintln(w,getUser[0].Id)
+	}else{
+		fmt.Fprintln(w,"身份验证出错")
 	}
 }
