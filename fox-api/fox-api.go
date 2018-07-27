@@ -9,6 +9,7 @@ import(
 	"github.com/gorilla/mux"
 	"encoding/json"
 	"strconv"
+	"time"
 )
 type Info struct{
 	AuthorName 	string 	`json:"authorName"`
@@ -29,24 +30,31 @@ type user struct{
 }
 
 type getuser struct{
-	Userid string    `json:"userid"`
-	Password string	 `json:"password"`
-	Id       bson.ObjectId `bson:"_id"`
+	Userid 		string    		`json:"userid"`
+	Password 	string	 		`json:"password"`
+	Id       	bson.ObjectId 	`bson:"_id"`
 }
-//islogin :=false    
-				//false表示未登录
-				//true 表示登录
+
+type posting struct{
+	Title string 	`json:"title"`
+	Author string 	`json:"author"`
+	Content string 	`json:"content"`
+	Date string 	`json:"date"`
+}
+
+
 
 func main(){
 	router :=mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/news",Index)
 	router.HandleFunc("/register",RegisterPage)
 	router.HandleFunc("/login",LoginPage)
+	router.HandleFunc("/publish",PublishPage)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
 
 
-//   /news
+//   /news   输入新闻数量及token，若通过验证则返回新闻，否则报错
 func Index(w http.ResponseWriter,r *http.Request){
 	var User []user
 	//通过token取出对应的数据，否则报错
@@ -80,19 +88,11 @@ func Index(w http.ResponseWriter,r *http.Request){
 		}
 		fmt.Fprintln(w,string(jsons))
 	}else{
-		fmt.Fprintln(w,"身份验证出错")
+		fmt.Fprintln(w,"身份验证错误")
 	}
-
-
-	
-	
-	
-	
-	
-	
-	
 }
-// register
+
+// register 注册页，注册账号，注册成功之后会返回token
 func RegisterPage(w http.ResponseWriter,r *http.Request){
 	var User []user
 	var getUser []getuser
@@ -116,7 +116,7 @@ func RegisterPage(w http.ResponseWriter,r *http.Request){
 	}
 }
 
-// LoginPage
+// LoginPage   登录后返回token
 func LoginPage(w http.ResponseWriter,r *http.Request){
 	var User []user
 	var getUser []getuser
@@ -136,5 +136,49 @@ func LoginPage(w http.ResponseWriter,r *http.Request){
 		fmt.Fprintln(w,getUser[0].Id)
 	}else{
 		fmt.Fprintln(w,"身份验证出错")
+	}
+}
+
+
+//PublishPage 发布帖子
+func PublishPage(w http.ResponseWriter,r *http.Request){
+	var User []user
+	var Posting posting
+	temp :=r.URL.Query().Get("token")
+	token:=bson.ObjectIdHex(temp)
+	session,err :=mgo.Dial("localhost")
+	if err !=nil{
+		panic(err)
+	}
+	db :=session.DB("userinfo") 
+	c :=db.C("usertable")
+	c.Find(bson.M{"_id":token}).All(&User)
+	if len(User) !=0{
+		//当token正确时，发布帖子
+		fmt.Fprintln(w,"token正确，进入发布状态")
+		//将帖子存入数据库中
+		title :=r.URL.Query().Get("title")
+		content :=r.URL.Query().Get("content")
+		if(title=="" || content==""){
+			fmt.Fprintln(w,"题目或内容未正确输入，发布失败")
+		}else{
+			dtime :=time.Now()
+			date := dtime.Format("2006-01-02 15:04:05")
+			Posting.Title=title
+			Posting.Author=User[0].Userid
+			Posting.Content=content
+			Posting.Date=date
+			session1,err1 :=mgo.Dial("localhost")
+			if err1 !=nil{
+				panic(err1)
+			}
+			db1 :=session1.DB("userinfo")
+			c1 :=db1.C("postings")
+			c1.Insert(Posting)
+			fmt.Fprintln(w,"发布成功")
+		}
+	}else{
+		//当token错误时，发布失败
+		fmt.Fprintln(w,"token错误，发布失败")
 	}
 }
