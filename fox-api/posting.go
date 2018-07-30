@@ -13,7 +13,6 @@ import(
 func PublishPage(w http.ResponseWriter,r *http.Request){
 	var User []user
 	var Posting posting
-	var Postshort postshort
 	temp :=r.URL.Query().Get("token")
 	if temp ==""{
 		fmt.Fprintln(w,"token should not be empty")
@@ -36,23 +35,18 @@ func PublishPage(w http.ResponseWriter,r *http.Request){
 				fmt.Fprintln(w,"题目或内容未正确输入，发布失败")
 			}else{
 				dtime :=time.Now()
-				date := dtime.Format("2006-01-02 15:04:05")
+				date := dtime.Unix()
 				Posting.Title=title
 				Posting.Author=User[0].Userid
 				Posting.Content=content
 				Posting.Date=date
-				Postshort.Title=title
-				Postshort.Author=User[0].Userid
-				Postshort.Date=date
 				session1,err1 :=mgo.Dial("localhost")
 				if err1 !=nil{
 					panic(err1)
 				}
 				db1 :=session1.DB("userinfo")
 				c1 :=db1.C("postings")
-				c2 :=db1.C("postshort")
 				c1.Insert(Posting)
-				c2.Insert(Postshort)
 				fmt.Fprintln(w,"发布成功")
 			}
 		}else{
@@ -65,20 +59,28 @@ func PublishPage(w http.ResponseWriter,r *http.Request){
 
 //查看所有帖子 展示帖子概况
 func PostingPage(w http.ResponseWriter,r *http.Request){
-	var postshort []postshort
+	var Postshort []postshort
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
 		panic(err)
 	}
 	db :=session.DB("userinfo")
 	c :=db.C("postings")
-	c.Find(nil).Sort("-date").All(&postshort)
-	w.Header().Set("Content-type","application/json")
-	jsons,err:=json.Marshal(postshort)
-	if err !=nil{
-		panic(err)
+	c.Find(nil).Sort("-date").Select(bson.M{"title":1,"author":1,"date":1}).All(&Postshort)
+	if len(Postshort)!=0{
+	
+		w.Header().Set("Content-type","application/json")
+		jsons,err:=json.Marshal(Postshort)
+		if err !=nil{
+			panic(err)
+		}
+		fmt.Fprintln(w,string(jsons))
+	}else{
+		fmt.Fprintln(w,"目前没有任何帖子")
+		
 	}
-	fmt.Fprintln(w,string(jsons))
+	
+	
 }
 
 //展示帖子细节，包括帖子内容以及评论

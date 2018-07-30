@@ -1,6 +1,10 @@
 package main
 
-import "gopkg.in/mgo.v2/bson"
+import(
+	"gopkg.in/mgo.v2/bson"
+	//"time"
+) 
+
 
 type Info struct{
 	AuthorName 	string 	`json:"authorName"`
@@ -27,22 +31,22 @@ type getuser struct{
 }
 
 type posting struct{
-	Title string 	`json:"title"`
-	Author string 	`json:"author"`
+	Title   string 	`json:"title"`
+	Author  string 	`json:"author"`
 	Content string 	`json:"content"`
-	Date string 	`json:"date"`
+	Date    int64 	`json:"date"`
 }
 
 type postshort struct{
 	Title 	string `json:"title"`
 	Author 	string `json:"author"`
-	Date 	string `json:"date"`
+	Date 	int64  `json:"date"`
 } 
 
 type comment struct{
 	Author string `json:"author"`
-	Date   string `json:"date"`
+	Date   int64 `json:"date"`
 	Userid string `json:"userid"`
 	Com    string `json:"com"`
-	Time   string `json:"time"`
+	Time   int64 `json:"time"`
 }

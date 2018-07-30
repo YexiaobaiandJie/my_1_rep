@@ -20,13 +20,3 @@ func main(){
 	router.HandleFunc("/comment",CommentPage)
 	log.Fatal(http.ListenAndServe(":8080",router))
 }
-
-
-
-	
-
-	
-	
-
-
-
