@@ -7,6 +7,7 @@ import(
 	"gopkg.in/mgo.v2/bson"
 	"encoding/json"
 	"time"
+	"strconv"
 )
 
 //PublishPage 发布帖子
@@ -68,7 +69,6 @@ func PostingPage(w http.ResponseWriter,r *http.Request){
 	c :=db.C("postings")
 	c.Find(nil).Sort("-date").Select(bson.M{"title":1,"author":1,"date":1}).All(&Postshort)
 	if len(Postshort)!=0{
-	
 		w.Header().Set("Content-type","application/json")
 		jsons,err:=json.Marshal(Postshort)
 		if err !=nil{
@@ -93,19 +93,18 @@ func DetailPage(w http.ResponseWriter,r *http.Request){
 	if author=="" || date==""{
 		fmt.Fprintln(w,"author or date should not be empty")
 	}else{
+		date2,err:=strconv.ParseInt(date, 10, 64)   
 		session,err :=mgo.Dial("localhost")
 		if err !=nil{
 			panic(err)
 		}
 		db :=session.DB("userinfo")
 		c :=db.C("postings")
-		c.Find(bson.M{"author":author,"date":date}).All(&Posting)
+		c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
 		if len(Posting)!=0{
-			//session1,err :=mgo.Dial("hostlocal")
-			//db1 :=session1.DB("userinfo")
 			c1 :=db.C("comments")
-			c1.Find(bson.M{"author":author,"date":date}).All(&Comment)
-			json1,err :=json.Marshal(Posting)
+			c1.Find(bson.M{"author":author,"date":date2}).All(&Comment)
+		 	json1,err :=json.Marshal(Posting)
 			if err!=nil{
 				panic(err)
 			}
@@ -128,6 +127,7 @@ func DetailPage(w http.ResponseWriter,r *http.Request){
 func CommentPage(w http.ResponseWriter,r *http.Request){
 	var User user
 	var Comment comment
+	var Posting []posting
 	//需要时间和作者来确定帖子
 	author :=r.URL.Query().Get("author")
 	date :=r.URL.Query().Get("date")
@@ -136,31 +136,50 @@ func CommentPage(w http.ResponseWriter,r *http.Request){
 	if(author=="" || date=="" || temp=="" || com==""){
 		fmt.Fprintln(w,"author or date or temp or com should not be empty")
 	}else{
-		dtime :=time.Now()
-		timenow := dtime.Format("2006-01-02 15:04:05")
-		token :=bson.ObjectIdHex(temp)
-		//根据token查找用户名
-		session,err :=mgo.Dial("localhost")
+		session2,err :=mgo.Dial("localhost")
 		if err !=nil{
 			panic(err)
 		}
-		db :=session.DB("userinfo")
-		c  :=db.C("usertable")
-		c.Find(bson.M{"_id":token}).One(&User)
-		//将评论存入数据库
-		session1,err1 :=mgo.Dial("localhost")
-		if err1 !=nil{
-			panic(err)
+		db2 :=session2.DB("userinfo")
+		c2 :=db2.C("postings")
+		date2,err:=strconv.ParseInt(date, 10, 64)
+		c2.Find(bson.M{"author":author,"date":date2}).All(&Posting)
+		if len(Posting)!=0{
+			  
+			dtime :=time.Now()
+			timenow := dtime.Unix()
+			token :=bson.ObjectIdHex(temp)
+			//根据token查找用户名
+			session,err :=mgo.Dial("localhost")
+			if err !=nil{
+				panic(err)
+			}
+			db :=session.DB("userinfo")
+			c  :=db.C("usertable")
+			c.Find(bson.M{"_id":token}).One(&User)
+			//将评论存入数据库
+			session1,err1 :=mgo.Dial("localhost")
+			if err1 !=nil{
+				panic(err)
+			}
+			db1 :=session1.DB("userinfo")
+			c1  :=db1.C("comments")
+			Comment.Author=author
+			Comment.Date=date2
+			Comment.Userid=User.Userid
+			Comment.Com=com
+			Comment.Time=timenow
+			c1.Insert(Comment)
+			fmt.Fprintln(w,"发表评论成功")
+		}else{
+			fmt.Fprintln(w,"不存在对应帖子，请确认作者和时间")
 		}
-		db1 :=session1.DB("userinfo")
-		c1  :=db1.C("comments")
-		Comment.Author=author
-		Comment.Date=date
-		Comment.Userid=User.Userid
-		Comment.Com=com
-		Comment.Time=timenow
-		c1.Insert(Comment)
-		fmt.Fprintln(w,"发表评论成功")
+
+
+
+
+
+		
 	}
 	
 }

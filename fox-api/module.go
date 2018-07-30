@@ -50,3 +50,8 @@ type comment struct{
 	Com    string `json:"com"`
 	Time   int64 `json:"time"`
 }
+
+// type detail struct{
+// 	Con posting `json:"con"`
+// 	Com []comment `json:"com"`
+// }
