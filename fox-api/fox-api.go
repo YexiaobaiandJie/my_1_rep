@@ -9,7 +9,7 @@ import(
 func main(){
 	r :=gin.Default()
 	r.GET("/news",Index)
-	r.GET("/login",LoginPage)
+	r.POST("/login",LoginPage)
 	r.POST("/register",RegisterPage)
 	r.POST("/publish",PublishPage)
 	r.GET("/postings",PostingPage)
