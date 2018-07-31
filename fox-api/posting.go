@@ -15,7 +15,7 @@ func PublishPage(cq *gin.Context){
 	temp :=cq.Query("token")
 	if temp ==""{
 		cq.String(200,"token should not be empty")
-	}else{
+	}else if len(temp)==24{
 		token:=bson.ObjectIdHex(temp)
 		session,err :=mgo.Dial("localhost")
 		if err !=nil{
@@ -52,6 +52,8 @@ func PublishPage(cq *gin.Context){
 			//当token错误时，发布失败
 			cq.String(200,"token错误，发布失败")
 		}
+	}else{
+		cq.String(200,"token残缺,发布失败")
 	}
 	
 }
@@ -71,8 +73,6 @@ func PostingPage(cq *gin.Context){
 	}else{
 		cq.String(200,"目前没有任何帖子")
 	}
-	
-	
 }
 
 //展示帖子细节，包括帖子内容以及评论
@@ -84,7 +84,6 @@ func DetailPage(cq *gin.Context){
 	author :=cq.Query("author")
 	date :=cq.Query("date")
 	if author=="" || date==""{
-		
 		cq.String(200,"author or date should not be empty")
 	}else{
 		date2,err:=strconv.ParseInt(date, 10, 64)   
@@ -108,25 +107,23 @@ func DetailPage(cq *gin.Context){
 			cq.String(200,"找不到相应帖子，请确认作者和时间")
 		}
 	}
-	
 }
 
 
 //发表评论
 func CommentPage(cq *gin.Context){
 	var User user
+	var fake user
 	var Comment comment
 	var Posting []posting
 	//需要时间和作者来确定帖子
-	
 	author :=cq.Query("author")
 	date :=cq.Query("date")
 	temp :=cq.Query("token")
 	com :=cq.Query("com")
 	if(author=="" || date=="" || temp=="" || com==""){
-		
 		cq.String(200,"author or date or temp or com should not be empty")
-	}else{
+	}else if len(temp)==24{
 		session2,err :=mgo.Dial("localhost")
 		if err !=nil{
 			panic(err)
@@ -136,7 +133,6 @@ func CommentPage(cq *gin.Context){
 		date2,err:=strconv.ParseInt(date, 10, 64)
 		c2.Find(bson.M{"author":author,"date":date2}).All(&Posting)
 		if len(Posting)!=0{
-			  
 			dtime :=time.Now()
 			timenow := dtime.Unix()
 			token :=bson.ObjectIdHex(temp)
@@ -148,23 +144,29 @@ func CommentPage(cq *gin.Context){
 			db :=session.DB("userinfo")
 			c  :=db.C("usertable")
 			c.Find(bson.M{"_id":token}).One(&User)
-			//将评论存入数据库
-			session1,err1 :=mgo.Dial("localhost")
-			if err1 !=nil{
-				panic(err)
-			}
-			db1 :=session1.DB("userinfo")
-			c1  :=db1.C("comments")
-			Comment.Author=author
-			Comment.Date=date2
-			Comment.Userid=User.Userid
-			Comment.Com=com
-			Comment.Time=timenow
-			c1.Insert(Comment)
-			cq.String(200,"发表评论成功")
+			if User==fake{
+				cq.String(200,"token错误")
+			}else{
+					//将评论存入数据库
+					session1,err1 :=mgo.Dial("localhost")
+					if err1 !=nil{
+						panic(err)
+					}
+					db1 :=session1.DB("userinfo")
+					c1  :=db1.C("comments")
+					Comment.Author=author
+					Comment.Date=date2
+					Comment.Userid=User.Userid
+					Comment.Com=com
+					Comment.Time=timenow
+					c1.Insert(Comment)
+					cq.String(200,"发表评论成功")
+				}
 		}else{
 			cq.String(200,"不存在对应帖子，请确认作者和时间")
 		}		
+	}else{
+		cq.String(200,"token残缺")
 	}
 	
 }

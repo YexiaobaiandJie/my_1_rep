@@ -15,9 +15,8 @@ func Index(cq *gin.Context){
 	//通过token取出对应的数据，否则报错
 	temp :=cq.Query("token")
 	if temp==""{
-
 		cq.String(http.StatusOK,"token should not be empty")
-	}else{
+	}else if len(temp)==24{
 		token:=bson.ObjectIdHex(temp)
 		session1,err :=mgo.Dial("localhost")
 		if err !=nil{
@@ -46,13 +45,12 @@ func Index(cq *gin.Context){
 				if err !=nil{
 					panic(err)
 				}
-				
 				cq.JSON(200,infos)
 			}
-			
 		}else{
-			
 			cq.String(http.StatusOK,"身份验证错误")
 		}
+	}else{
+		cq.String(200,"token 残缺")
 	}
 }
