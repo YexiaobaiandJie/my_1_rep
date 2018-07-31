@@ -2,7 +2,6 @@ package main
 
 import(
 	"gopkg.in/mgo.v2/bson"
-	//"time"
 ) 
 
 
@@ -51,7 +50,16 @@ type comment struct{
 	Time   int64 `json:"time"`
 }
 
-// type detail struct{
-// 	Con posting `json:"con"`
-// 	Com []comment `json:"com"`
-// }
+type detailcom struct{
+	Userid string `json:"userid"`
+	Com    string `json:"com"`
+	Time   int64  `json:"time"`
+}
+
+type detail struct{
+	Title   string 	`json:"title"`
+	Author  string 	`json:"author"`
+	Content string 	`json:"content"`
+	Date    int64 	`json:"date"`
+	Com 	[]detailcom `json:"com"`
+}

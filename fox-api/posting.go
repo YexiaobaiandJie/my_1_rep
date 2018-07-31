@@ -1,22 +1,20 @@
 package main
 
 import(
-	"net/http"
-	"fmt"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"encoding/json"
 	"time"
 	"strconv"
+	"github.com/gin-gonic/gin"
 )
 
 //PublishPage 发布帖子
-func PublishPage(w http.ResponseWriter,r *http.Request){
+func PublishPage(cq *gin.Context){
 	var User []user
 	var Posting posting
-	temp :=r.URL.Query().Get("token")
+	temp :=cq.Query("token")
 	if temp ==""{
-		fmt.Fprintln(w,"token should not be empty")
+		cq.String(200,"token should not be empty")
 	}else{
 		token:=bson.ObjectIdHex(temp)
 		session,err :=mgo.Dial("localhost")
@@ -28,12 +26,12 @@ func PublishPage(w http.ResponseWriter,r *http.Request){
 		c.Find(bson.M{"_id":token}).All(&User)
 		if len(User) !=0{
 			//当token正确时，发布帖子
-			fmt.Fprintln(w,"token正确，进入发布状态")
+			cq.String(200,"token正确，进入发布状态->")
 			//将帖子存入数据库中
-			title :=r.URL.Query().Get("title")
-			content :=r.URL.Query().Get("content")
+			title :=cq.Query("title")
+			content :=cq.Query("content")
 			if(title=="" || content==""){
-				fmt.Fprintln(w,"题目或内容未正确输入，发布失败")
+				cq.String(200,"题目或内容未正确输入，发布失败")
 			}else{
 				dtime :=time.Now()
 				date := dtime.Unix()
@@ -48,18 +46,18 @@ func PublishPage(w http.ResponseWriter,r *http.Request){
 				db1 :=session1.DB("userinfo")
 				c1 :=db1.C("postings")
 				c1.Insert(Posting)
-				fmt.Fprintln(w,"发布成功")
+				cq.String(200,"发布成功")
 			}
 		}else{
 			//当token错误时，发布失败
-			fmt.Fprintln(w,"token错误，发布失败")
+			cq.String(200,"token错误，发布失败")
 		}
 	}
 	
 }
 
 //查看所有帖子 展示帖子概况
-func PostingPage(w http.ResponseWriter,r *http.Request){
+func PostingPage(cq *gin.Context){
 	var Postshort []postshort
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
@@ -69,29 +67,25 @@ func PostingPage(w http.ResponseWriter,r *http.Request){
 	c :=db.C("postings")
 	c.Find(nil).Sort("-date").Select(bson.M{"title":1,"author":1,"date":1}).All(&Postshort)
 	if len(Postshort)!=0{
-		w.Header().Set("Content-type","application/json")
-		jsons,err:=json.Marshal(Postshort)
-		if err !=nil{
-			panic(err)
-		}
-		fmt.Fprintln(w,string(jsons))
+			cq.JSON(200,Postshort)
 	}else{
-		fmt.Fprintln(w,"目前没有任何帖子")
-		
+		cq.String(200,"目前没有任何帖子")
 	}
 	
 	
 }
 
 //展示帖子细节，包括帖子内容以及评论
-func DetailPage(w http.ResponseWriter,r *http.Request){
+func DetailPage(cq *gin.Context){
 	//根据时间和作者来确定帖子以及评论
 	var Posting []posting
-	var Comment []comment
-	author :=r.URL.Query().Get("author")
-	date :=r.URL.Query().Get("date")
+	var Comment []detailcom
+	var Detail  detail
+	author :=cq.Query("author")
+	date :=cq.Query("date")
 	if author=="" || date==""{
-		fmt.Fprintln(w,"author or date should not be empty")
+		
+		cq.String(200,"author or date should not be empty")
 	}else{
 		date2,err:=strconv.ParseInt(date, 10, 64)   
 		session,err :=mgo.Dial("localhost")
@@ -103,20 +97,15 @@ func DetailPage(w http.ResponseWriter,r *http.Request){
 		c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
 		if len(Posting)!=0{
 			c1 :=db.C("comments")
-			c1.Find(bson.M{"author":author,"date":date2}).All(&Comment)
-		 	json1,err :=json.Marshal(Posting)
-			if err!=nil{
-				panic(err)
-			}
-			json2,err :=json.Marshal(Comment)
-			if err !=nil{
-				panic(err)
-			}
-			fmt.Fprintln(w,string(json1))
-			
-			fmt.Fprintln(w,string(json2))
+			c1.Find(bson.M{"author":author,"date":date2}).Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
+			Detail.Title=Posting[0].Title
+			Detail.Author=Posting[0].Author
+			Detail.Content=Posting[0].Content
+			Detail.Date=Posting[0].Date
+			Detail.Com=Comment
+			cq.JSON(200,Detail)
 		}else{
-			fmt.Fprintln(w,"找不到对应帖子，请确认作者和时间")
+			cq.String(200,"找不到相应帖子，请确认作者和时间")
 		}
 	}
 	
@@ -124,17 +113,19 @@ func DetailPage(w http.ResponseWriter,r *http.Request){
 
 
 //发表评论
-func CommentPage(w http.ResponseWriter,r *http.Request){
+func CommentPage(cq *gin.Context){
 	var User user
 	var Comment comment
 	var Posting []posting
 	//需要时间和作者来确定帖子
-	author :=r.URL.Query().Get("author")
-	date :=r.URL.Query().Get("date")
-	temp :=r.URL.Query().Get("token")
-	com :=r.URL.Query().Get("com")
+	
+	author :=cq.Query("author")
+	date :=cq.Query("date")
+	temp :=cq.Query("token")
+	com :=cq.Query("com")
 	if(author=="" || date=="" || temp=="" || com==""){
-		fmt.Fprintln(w,"author or date or temp or com should not be empty")
+		
+		cq.String(200,"author or date or temp or com should not be empty")
 	}else{
 		session2,err :=mgo.Dial("localhost")
 		if err !=nil{
@@ -170,16 +161,10 @@ func CommentPage(w http.ResponseWriter,r *http.Request){
 			Comment.Com=com
 			Comment.Time=timenow
 			c1.Insert(Comment)
-			fmt.Fprintln(w,"发表评论成功")
+			cq.String(200,"发表评论成功")
 		}else{
-			fmt.Fprintln(w,"不存在对应帖子，请确认作者和时间")
-		}
-
-
-
-
-
-		
+			cq.String(200,"不存在对应帖子，请确认作者和时间")
+		}		
 	}
 	
 }
