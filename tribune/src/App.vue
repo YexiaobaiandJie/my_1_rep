@@ -2,10 +2,8 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <!-- <HelloWorld/> -->
-    <div>
-      <h2>论坛</h2>
-    </div>
     <div class="head">
+      <div class="b">{{head}}</div>
       <router-link to="/news" class="a">news</router-link>
       <router-link to="/postings" class="a">postings</router-link>
       <router-link to="/news" class="a">login</router-link>
@@ -30,7 +28,7 @@ export default {
   },
   data(){
     return{
-      
+      head:"论坛"
     }
   },
   methods:{
@@ -42,10 +40,10 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  /* font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  -moz-osx-font-smoothing: grayscale; */
+  /* text-align: center; */
   color: #2c3e50;
   min-width:944px;
   /* margin-top: 60px; */
@@ -65,8 +63,16 @@ export default {
 .a{
   color:aliceblue;
   text-decoration:none;
+  margin-left:2.5%;
+  margin-right:2.5%;
+  
+}
+.b{
+  color:aliceblue;
+  text-decoration:none;
   margin-left:5%;
-  margin-right:5%;
+  margin-right:55%;
+  float:left;
 }
 .here{
   color:#ff4500;

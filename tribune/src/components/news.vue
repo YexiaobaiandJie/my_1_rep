@@ -42,7 +42,7 @@ export default{
     },
     methods:{
         loadnews:function(){
-        this.$http.get('http://localhost:8081/news?token=5b5ff5794cf88aed639018e0&pagesize=10').then(response => {
+        this.$http.get('http://localhost:8080/news?token=5b5ff5794cf88aed639018e0&pagesize=10').then(response => {
             console.log(response.data);
         },response => {
             console.log("error");

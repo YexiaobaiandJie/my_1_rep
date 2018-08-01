@@ -15,6 +15,6 @@ func main(){
 	r.GET("/postings",PostingPage)
 	r.GET("/detail",DetailPage)
 	r.POST("/comment",CommentPage)
-	r.Run(":8080")
+	r.Run(":3000")
 }
 

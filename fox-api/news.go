@@ -13,6 +13,7 @@ import(
 func Index(cq *gin.Context){
 	var User []user
 	//通过token取出对应的数据，否则报错
+	cq.Header("Access-Control-Allow-Origin", "*")
 	temp :=cq.Query("token")
 	if temp==""{
 		cq.String(http.StatusOK,"token should not be empty")
