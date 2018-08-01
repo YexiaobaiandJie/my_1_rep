@@ -6,13 +6,13 @@
       <h2>论坛</h2>
     </div>
     <div class="head">
-      <span class="s1" to="/news" v-bind:class="{here:ishere1}" v-on:mouseover="trueishere1" v-on:mouseout="falseishere1">news</span>
-      <span class="s1" v-bind:class="{here:ishere2}" v-on:mouseover="trueishere2" v-on:mouseout="falseishere2">postings</span>
-      <span class="s1" v-bind:class="{here:ishere3}" v-on:mouseover="trueishere3" v-on:mouseout="falseishere3">login</span>
+      <router-link to="/news" class="a">news</router-link>
+      <router-link to="/postings" class="a">postings</router-link>
+      <router-link to="/news" class="a">login</router-link>
     </div>
     <div class="underline"></div>
-    <!-- <News></News>
-    <Postings></Postings> -->
+    <router-view></router-view>
+    
   </div>
 </template>
 
@@ -30,31 +30,11 @@ export default {
   },
   data(){
     return{
-      ishere1:false,
-      ishere2:false,
-      ishere3:false
+      
     }
   },
   methods:{
-    trueishere1:function(){
-      this.ishere1=true
-    },
-    falseishere1:function(){
-      this.ishere1=false
-    },
     
-    trueishere2:function(){
-      this.ishere2=true
-    },
-    falseishere2:function(){
-      this.ishere2=false
-    },
-    trueishere3:function(){
-      this.ishere3=true
-    },
-    falseishere3:function(){
-      this.ishere3=false
-    }
 
   }
   }
@@ -75,11 +55,17 @@ export default {
   padding-bottom:1%;
   font-size:130%;
 }
-.s1{
+/* .s1{
   color:aliceblue;
   margin-left:5%;
   margin-right:5%;
   cursor:default;
+} */
+.a{
+  color:aliceblue;
+  text-decoration:none;
+  margin-left:5%;
+  margin-right:5%;
 }
 .here{
   color:#ff4500;
