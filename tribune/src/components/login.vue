@@ -1,11 +1,11 @@
 <template>
 <div>
     <div class="login_content">
-        <input type="text" placeholder="userid" class="id_input" />
-        <input type="text" placeholder="password" class="pwd_input" />
+        <input type="text" id="userid" placeholder="userid" class="id_input" />
+        <input type="text" id="password" placeholder="password" class="pwd_input" />
         <br />
         <div>
-            <button class="login_button" v-bind:class="{onbutton:ison}" v-on:mouseover="onthebutton" v-on:mouseout="leavethebutton">login</button>
+            <button v-on:click="login" class="login_button" v-bind:class="{onbutton:ison}" v-on:mouseover="onthebutton" v-on:mouseout="leavethebutton">login</button>
             <button class="regi_button" v-bind:class="{onbutton:ison2}" v-on:mouseover="onthebutton2" v-on:mouseout="leavethebutton2">register</button>
         </div>
     </div>
@@ -17,6 +17,7 @@
 export default{
     data(){
         return{
+            token:1,
             ison:false,
             ison2:false
         }
@@ -33,6 +34,19 @@ export default{
         },
         leavethebutton2:function(){
             this.ison2=false
+        },
+        login:function(){
+            var idinput=document.getElementById("userid")
+            var pwdinput=document.getElementById("password")
+            var userid=idinput.value;
+            var password=pwdinput.value;
+            this.$http.post('http://localhost:3000/login',{"Userid":userid,"Password":password}).then(function(res){
+                var date = res.body
+                console.log(date)
+                this.token=date
+            },function(res){
+                console.log("error")
+            })
         }
     }
 }
@@ -54,6 +68,7 @@ export default{
     margin-top:2%;
     width:250px;
     height:25px;
+    margin-left:4px;
     border-style:none;
     border-bottom-style:solid;
     border-bottom-width:thin;
@@ -83,7 +98,7 @@ input::-webkit-input-placeholder{
 .regi_button{
     width:80px;
     height:30px;
-    margin-left:44px;
+    margin-left:42px;
     font-size:18px;
     background:none;
     border:none;
