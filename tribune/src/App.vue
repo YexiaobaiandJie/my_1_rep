@@ -6,7 +6,7 @@
       <div class="b">{{head}}</div>
       <router-link to="/news" class="a">news</router-link>
       <router-link to="/postings" class="a">postings</router-link>
-      <router-link to="/news" class="a">login</router-link>
+      <router-link to="/login" class="a">login/register</router-link>
     </div>
     <div class="underline"></div>
     <router-view></router-view>
