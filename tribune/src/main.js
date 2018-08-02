@@ -6,6 +6,7 @@ import VueResource from 'vue-resource'
 import VRouter from 'vue-router'
 import News from './components/news'
 import Postings from './components/postings'
+import Newsdetail from './components/newsdetail'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VRouter)
@@ -19,6 +20,10 @@ let router = new VRouter({
     {
       path:'/postings',
       component: Postings
+    },
+    {
+      path:'/newsdetail',
+      component:  Newsdetail
     }
   ]
 })
