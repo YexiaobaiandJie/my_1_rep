@@ -33,6 +33,7 @@
 
 
 <script>
+
 export default{
     mounted:function(){
         this.loadpostings()

@@ -14,6 +14,7 @@
 
 
 <script>
+import Store from './store'
 export default{
     data(){
         return{
@@ -44,6 +45,7 @@ export default{
                 var date = res.body
                 console.log(date)
                 this.token=date
+                Store.savetoken(date)
             },function(res){
                 console.log("error")
             })
