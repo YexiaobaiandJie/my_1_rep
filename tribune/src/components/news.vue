@@ -6,7 +6,7 @@
         <hr />
             <div  v-for="newitem in newitems" class="newstyle">
                 <div class="new-l">{{newitem.title}}</div>
-                <div class="new-r">{{newitem.date}}</div>
+                <div class="new-r">{{newitem.publishDate}}</div>
             </div>
     </div>
 </template>
@@ -20,33 +20,18 @@ export default{
     data(){
         return{
             message:"this is the news component",
-            newitems:[
-                {
-                    title:"新闻的题目",
-                    date:"2018-08-01"
-                },
-                {
-                    title:"新闻的题目",
-                    date:"2018-08-01"
-                },
-                {
-                    title:"新闻的题目",
-                    date:"2018-08-01"
-                },
-                {
-                    title:"新闻的题目",
-                    date:"2018-08-01"
-                }
-            ]
+            newitems:[]
         }
     },
     methods:{
         loadnews:function(){
-        this.$http.get('http://localhost:8080/news?token=5b5ff5794cf88aed639018e0&pagesize=10').then(response => {
-            console.log(response.data);
+        
+        this.$http.get('http://localhost:3000/news?token=5b5ff5794cf88aed639018e0&pagesize=30').then(response => {
+            this.newitems=response.data;
         },response => {
             console.log("error");
         });
+        
         }
     }
 }

@@ -45,7 +45,7 @@ export default {
   -moz-osx-font-smoothing: grayscale; */
   /* text-align: center; */
   color: #2c3e50;
-  min-width:944px;
+  min-width:1025px;
   /* margin-top: 60px; */
 } 
 .head{

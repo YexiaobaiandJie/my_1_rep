@@ -1,12 +1,12 @@
 <template>
     <div class="content">
         <div class="posttitle">
-            <h2>论帖>></h2>
+            <h2>论帖~~author</h2>
         </div>
         <hr />
             <div  v-for="postitem in postitems" class="poststyle">
                 <div class="post-l">{{postitem.title}}</div>
-                <div class="post-r">{{postitem.date}}</div>
+                <div class="post-r">{{postitem.author}}</div>
             </div>
             <button class="btnpublish" v-bind:class="{clickbtn:ison}" v-on:mouseover="onbtn" v-on:mouseout="gobtn">发帖</button>
     </div>
@@ -16,30 +16,21 @@
 <script>
 export default{
     mounted:function(){
-        this.loadnews()
+        this.loadpostings()
     },
     data(){
         return{
             ison:false,
-            postitems:[
-                {
-                    title:"帖子的题目",
-                    date:"2018-08-01"
-                },
-                {
-                    title:"帖子的题目",
-                    date:"2018-08-01"
-                }
-            ]
+            postitems:[]
         }
     },
     methods:{
-        loadnews:function(){
-        this.$http.get('http://localhost:8080/news?token=5b5ff5794cf88aed639018e0&pagesize=10').then(response => {
-            console.log(response.data);
-        },response => {
-            console.log("error");
-        });
+        loadpostings:function(){
+            this.$http.get('http://localhost:3000/postings').then(response => {
+                this.postitems=response.data;
+            },response => {
+                console.log("error");
+            });
         },
         onbtn:function(){
             this.ison=true
