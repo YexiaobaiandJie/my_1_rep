@@ -2,7 +2,7 @@
 <div>
     <div class="login_content" v-show="!islogin">
         <input type="text" id="userid" placeholder="userid" class="id_input" />
-        <input type="password" id="password" placeholder="password" class="pwd_input" />
+        <input type="password" id="password" placeholder="password" class="pwd_input" v-on:keyup.enter="login"/>
         <br />
         <div>
             <button v-on:click="login" class="login_button" v-bind:class="{onbutton:ison}" v-on:mouseover="onthebutton" v-on:mouseout="leavethebutton">login</button>
@@ -77,13 +77,21 @@ export default{
             this.$http.post('http://localhost:3000/login',{"Userid":userid,"Password":password}).then(function(res){
                 var data = res.body
                 console.log(data)
-                this.token=data.Token
-                Store.savetoken(data.Token)
-                Store.saveuseid(data.userid)
-                Store.setlogin(true)
-                this.islogin=true
-                this.userid=data.userid
-                this.$parent.change_login_title()
+                if(data=="userid or userpwd should not be empty"){
+                    alert("userid or userpwd should not be empty")
+                }else if(data=="身份验证出错"){
+                    alert("身份验证出错")
+                }else{
+                    this.token=data.Token
+                    Store.savetoken(data.Token)
+                    Store.saveuseid(data.userid)
+                    
+                    Store.setlogin(true)
+                    this.islogin=true
+                    this.userid=data.userid
+                    this.$parent.change_login_title()
+                }
+                
             },function(res){
                 alert("username or password incorrect!")
             })

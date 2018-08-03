@@ -55,3 +55,18 @@ func Index(cq *gin.Context){
 		cq.String(200,"token 残缺")
 	}
 }
+
+func NewsdetailPage(cq *gin.Context){
+	var infos Info
+	temp :=cq.Query("id")
+	id,err:=strconv.Atoi(temp)
+	
+	session,err :=mgo.Dial("localhost")
+	if err !=nil{
+		panic(err)
+	}
+	db:=session.DB("foxinfo")
+	c:=db.C("info")
+	c.Find(bson.M{"id":id}).One(&infos)
+	cq.JSON(200,infos)
+}

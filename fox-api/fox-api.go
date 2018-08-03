@@ -17,6 +17,7 @@ func main(){
 	conf.ExposeHeaders =  []string{"Content-Length", "X-Server-Unique-ID", "Set-Cookie"}
 	r.Use(cors.New(conf))
 	r.GET("/news",Index)
+	r.GET("/newsd",NewsdetailPage)
 	r.POST("/login",LoginPage)
 	r.POST("/register",RegisterPage)
 	r.POST("/publish",PublishPage)
