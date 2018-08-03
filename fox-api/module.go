@@ -62,9 +62,15 @@ type detail struct{
 	Content string 	`json:"content"`
 	Date    int64 	`json:"date"`
 	Com 	[]detailcom `json:"com"`
+	Comcount int    `json:"comcount"`
 }
 
 type detailpost struct{
 	Author string `json:"author"`
 	Date   int64  `json:"date"`
+}
+
+type tokenid struct{
+	Userid string `json:"userid"`
+	Token  bson.ObjectId 	`bson:"_id"`
 }

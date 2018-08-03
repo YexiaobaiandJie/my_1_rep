@@ -105,6 +105,7 @@ func DetailPage(cq *gin.Context){
 				Detail.Content=Posting[0].Content
 				Detail.Date=Posting[0].Date
 				Detail.Com=Comment
+				Detail.Comcount=len(Comment)
 				cq.JSON(200,Detail)
 			}else{
 				cq.String(200,"找不到相应帖子，请确认作者和时间")

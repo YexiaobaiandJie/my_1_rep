@@ -1,7 +1,7 @@
 <template>
     <div class="content">
-        <div class="posttitle">
-            <h2>论帖-author</h2>
+        <div class="posttitle1">
+            <h2 v-on:click="backtopost">论帖-author</h2>
         </div>
         <hr />
         <div v-show="isShow">
@@ -13,12 +13,13 @@
         </div>
 
         <div v-show="!isShow">
-            <h2 class="posttitle">{{this.details.title}}</h2>
-            <h3 class="postauthor">{{this.details.author}}</h3>
+            <h3 class="posttitle">{{this.details.title}}</h3>
+            <h3 class="postauthor">author:{{this.details.author}}</h3>
             <div class="postcontent"><p>{{this.details.content}}</p></div>
-            <div class="postdate">{{this.details.date}}</div>
+            <div class="postdate">date:{{this.details.date}}</div>
             <hr />
-            <div class="comment">
+            <div class="comment" >
+                <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
                 <hr />
                 <div v-for="comitem in comitems">
                     <div class="comment_userid">{{comitem.userid}}</div>
@@ -40,9 +41,6 @@ export default{
     },
     data(){
         return{
-            comment_userid:"user1",
-            comment_content:"this is a good article",
-            comment_date:"2018-08-02",
             title:"title",
             author:"author",
             content:"content",
@@ -51,7 +49,9 @@ export default{
             postitems:[],
             comitems:[],
             details:"",
-            isShow:true
+            isShow:true,
+            comment_count:0,
+            comemntarea:"评论区"
         }
     },
     methods:{
@@ -74,10 +74,13 @@ export default{
                 console.log(response.data)
                 this.details=response.data;
                 this.comitems=this.details.com;
+                this.comment_count=this.details.comcount
             },response => {
                 console.log("error");
-            });
-             
+            });  
+        },
+        backtopost:function(){
+            this.isShow=true
         }
     }
 }
@@ -90,12 +93,19 @@ export default{
     height:100%;
     
 }
-.posttitle{
+/* .posttitle{
     text-align:left;
     padding-left:10px;
     margin-bottom:-10px;
     margin-top:-2px;
-   
+    
+} */
+.posttitle1{
+    text-align:left;
+    padding-left:10px;
+    margin-bottom:-10px;
+    margin-top:-2px;
+    cursor: pointer;
 }
 .poststyle{
     width:100%;
@@ -110,7 +120,7 @@ export default{
    font-size:120%;
    padding-bottom:0.4%;
    padding-top:0.4%;
-   
+   cursor: pointer;
 }
 .post-r{
    text-align:right;

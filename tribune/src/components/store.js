@@ -1,10 +1,25 @@
-const STORAGE_KEY='token'
+const TOKEN_KEY='token'
+const USERID_KEY='userid'
+const STATUS_KEY='islogin'
 
 export default{
     savetoken :function(token){
-        window.localStorage.setItem(STORAGE_KEY,JSON.stringify(token))
+        window.localStorage.setItem(TOKEN_KEY,JSON.stringify(token))
     },
-    gettoken :function(){
-        return JSON.parse(STORAGE_KEY)
-    } 
+    gettoken :function (){
+        return window.localStorage.getItem(TOKEN_KEY)
+    },
+    saveuseid :function(userid){
+        window.localStorage.setItem(USERID_KEY,JSON.stringify(userid))
+    },
+    getuserid :function (){
+        return window.localStorage.getItem(USERID_KEY)
+    },
+    setlogin:function(status){
+        window.localStorage.setItem(STATUS_KEY,JSON.stringify(status))
+    },
+    getstatus:function(){
+        return window.localStorage.getItem(STATUS_KEY)
+    }
+
 }
