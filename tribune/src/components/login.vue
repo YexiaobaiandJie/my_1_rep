@@ -6,7 +6,7 @@
         <br />
         <div>
             <button v-on:click="login" class="login_button" v-bind:class="{onbutton:ison}" v-on:mouseover="onthebutton" v-on:mouseout="leavethebutton">login</button>
-            <button class="regi_button" v-bind:class="{onbutton:ison2}" v-on:mouseover="onthebutton2" v-on:mouseout="leavethebutton2">register</button>
+            <button v-on:click="register" class="regi_button" v-bind:class="{onbutton:ison2}" v-on:mouseover="onthebutton2" v-on:mouseout="leavethebutton2">register</button>
         </div>
     </div>
     <div v-show="islogin" class="loginsu">
@@ -95,6 +95,9 @@ export default{
             },function(res){
                 alert("username or password incorrect!")
             })
+        },
+        register:function(){
+            this.$router.push({path:'/login/register'})
         }
     }
 }

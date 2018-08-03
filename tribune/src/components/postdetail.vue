@@ -4,15 +4,8 @@
             <h2 v-on:click="backtopost">论帖-author</h2>
         </div>
         <hr />
-        <!-- <div v-show="isShow"> -->
-            <div  v-for="postitem in postitems" class="poststyle">
-                <div class="post-l" v-on:click="clickpost(postitem)">{{postitem.title}}</div>
-                <div class="post-r">{{postitem.author}}</div>
-            </div>
-            <button class="btnpublish" v-bind:class="{clickbtn:ison}" v-on:mouseover="onbtn" v-on:mouseout="gobtn">发帖</button>
-        <!-- </div> -->
 
-        <!-- <div v-show="!isShow">
+        
             <h3 class="posttitle">{{this.details.title}}</h3>
             <h3 class="postauthor">author:{{this.details.author}}</h3>
             <div class="postcontent"><p>{{this.details.content}}</p></div>
@@ -28,7 +21,6 @@
                     <hr />
                 </div>
             </div>
-        </div> -->
     </div>
 </template>
 
@@ -41,6 +33,7 @@ export default{
     },
     data(){
         return{
+            message:"this is the postdetail",
             title:"title",
             author:"author",
             content:"content",
@@ -56,20 +49,22 @@ export default{
     },
     methods:{
         loadpostings:function(){
-            this.$http.get('http://localhost:3000/postings').then(response => {
-                this.postitems=response.data;
+            this.author=this.$route.query.Author
+            this.date=this.$route.query.Date
+            this.$http.post('http://localhost:3000/detail',{"Author":this.author,"Date":this.date}).then(response => {
+                //console.log(response.data)
+                this.details=response.data;
+                this.comitems=this.details.com;
+                this.comment_count=this.details.comcount
             },response => {
                 console.log("error");
-            });
+            }); 
         },
         onbtn:function(){
             this.ison=true
         },
         gobtn:function(){
             this.ison=false
-        },
-        clickpost:function(postitem){
-            this.$router.push({path:'/postings/postdetail',query:{Author:postitem.author,Date:postitem.date}})
         },
         backtopost:function(){
             this.isShow=true

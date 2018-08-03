@@ -8,6 +8,8 @@ import News from './components/news'
 import Postings from './components/postings'
 import Login from './components/login'
 import Newsdetail from './components/newsdetail'
+import Postdetail from './components/postdetail'
+import Register from './components/register'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VRouter)
@@ -29,6 +31,14 @@ let router = new VRouter({
     {
       path:'/news/newsdetail',
       component: Newsdetail
+    },
+    {
+      path:'/postings/postdetail',
+      component: Postdetail
+    },
+    {
+      path:'/login/register',
+      component: Register
     }
   ]
 })
