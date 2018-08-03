@@ -61,6 +61,7 @@ func PublishPage(cq *gin.Context){
 //查看所有帖子 展示帖子概况
 func PostingPage(cq *gin.Context){
 	var Postshort []postshort
+	//cq.Header("Access-Control-Allow-Origin", "*")
 	session,err :=mgo.Dial("localhost")
 	if err !=nil{
 		panic(err)
@@ -81,30 +82,33 @@ func DetailPage(cq *gin.Context){
 	var Posting []posting
 	var Comment []detailcom
 	var Detail  detail
-	author :=cq.Query("author")
-	date :=cq.Query("date")
-	if author=="" || date==""{
-		cq.String(200,"author or date should not be empty")
-	}else{
-		date2,err:=strconv.ParseInt(date, 10, 64)   
-		session,err :=mgo.Dial("localhost")
-		if err !=nil{
-			panic(err)
-		}
-		db :=session.DB("userinfo")
-		c :=db.C("postings")
-		c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
-		if len(Posting)!=0{
-			c1 :=db.C("comments")
-			c1.Find(bson.M{"author":author,"date":date2}).Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
-			Detail.Title=Posting[0].Title
-			Detail.Author=Posting[0].Author
-			Detail.Content=Posting[0].Content
-			Detail.Date=Posting[0].Date
-			Detail.Com=Comment
-			cq.JSON(200,Detail)
+	var Detailpost detailpost
+	if cq.ShouldBind(&Detailpost) == nil{
+		author :=Detailpost.Author
+		date :=Detailpost.Date
+		if author=="" || date==0{
+			cq.String(200,"author or date should not be empty")
 		}else{
-			cq.String(200,"找不到相应帖子，请确认作者和时间")
+			date2:=date
+			session,err :=mgo.Dial("localhost")
+			if err !=nil{
+				panic(err)
+			}
+			db :=session.DB("userinfo")
+			c :=db.C("postings")
+			c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
+			if len(Posting)!=0{
+				c1 :=db.C("comments")
+				c1.Find(bson.M{"author":author,"date":date2}).Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
+				Detail.Title=Posting[0].Title
+				Detail.Author=Posting[0].Author
+				Detail.Content=Posting[0].Content
+				Detail.Date=Posting[0].Date
+				Detail.Com=Comment
+				cq.JSON(200,Detail)
+			}else{
+				cq.String(200,"找不到相应帖子，请确认作者和时间")
+			}
 		}
 	}
 }
@@ -170,3 +174,35 @@ func CommentPage(cq *gin.Context){
 	}
 	
 }
+
+// func GetComPage(cq *gin.Context){
+// 	var Posting []posting
+// 	var Comment []detailcom
+// 	var Detail  detail
+// 	author :=cq.Query("author")
+// 	date :=cq.Query("date")
+// 	if author=="" || date==""{
+// 		cq.String(200,"author or date should not be empty")
+// 	}else{
+// 		date2,err:=strconv.ParseInt(date, 10, 64)   
+// 		session,err :=mgo.Dial("localhost")
+// 		if err !=nil{
+// 			panic(err)
+// 		}
+// 		db :=session.DB("userinfo")
+// 		c :=db.C("postings")
+// 		c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
+// 		if len(Posting)!=0{
+// 			c1 :=db.C("comments")
+// 			c1.Find(bson.M{"author":author,"date":date2}).Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
+// 			Detail.Title=Posting[0].Title
+// 			Detail.Author=Posting[0].Author
+// 			Detail.Content=Posting[0].Content
+// 			Detail.Date=Posting[0].Date
+// 			Detail.Com=Comment
+// 			cq.JSON(200,Detail)
+// 		}else{
+// 			cq.String(200,"找不到相应帖子，请确认作者和时间")
+// 		}
+// 	}
+// }

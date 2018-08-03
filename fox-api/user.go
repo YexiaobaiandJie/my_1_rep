@@ -47,6 +47,7 @@ func LoginPage(cq *gin.Context){
 	var User []user
 	var getUser []getuser
 	var user2 user
+	//cq.Header("Access-Control-Allow-Origin", "*")
 	if cq.ShouldBind(&user2) == nil{
 		userid :=user2.Userid
 		userpwd :=user2.Password
@@ -62,7 +63,7 @@ func LoginPage(cq *gin.Context){
 			c.Find(bson.M{"userid":userid}).All(&User)
 			c.Find(bson.M{"userid":userid}).Select(bson.M{"_id":1,"userid":1,"password":1}).All(&getUser)
 			if userpwd ==	User[0].Password{
-				cq.String(http.StatusOK,"身份验证成功")
+				// cq.String(http.StatusOK,"身份验证成功")
 				cq.JSON(200,getUser[0].Id)
 			}else{
 				cq.String(http.StatusOK,"身份验证出错")

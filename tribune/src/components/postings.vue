@@ -13,17 +13,17 @@
         </div>
 
         <div v-show="!isShow">
-            <h2 class="posttitle">{{title}}</h2>
-            <h3 class="postauthor">{{author}}</h3>
-            <div class="postcontent"><p>{{content}}</p></div>
-            <div class="postdate">{{date}}</div>
+            <h2 class="posttitle">{{this.details.title}}</h2>
+            <h3 class="postauthor">{{this.details.author}}</h3>
+            <div class="postcontent"><p>{{this.details.content}}</p></div>
+            <div class="postdate">{{this.details.date}}</div>
             <hr />
             <div class="comment">
                 <hr />
                 <div v-for="comitem in comitems">
-                    <div class="comment_userid">{{comitem.comment_userid}}</div>
-                    <div class="comment_content">{{comitem.comment_content}}</div>
-                    <div class="comment_date">{{comitem.comment_date}}</div>
+                    <div class="comment_userid">{{comitem.userid}}</div>
+                    <div class="comment_content">{{comitem.com}}</div>
+                    <div class="comment_date">{{comitem.time}}</div>
                     <hr />
                 </div>
             </div>
@@ -49,28 +49,8 @@ export default{
             date:"date",
             ison:false,
             postitems:[],
-            comitems:[
-                {
-                    comment_userid:"123",
-                    comment_content:"this article is very interesting!I support it !",
-                    comment_date:"2018-01-24"
-                },
-                {
-                    comment_userid:"123",
-                    comment_content:"this article is very interesting!I support it !",
-                    comment_date:"2018-01-24"
-                },
-                {
-                    comment_userid:"123",
-                    comment_content:"this article is very interesting!I support it !",
-                    comment_date:"2018-01-24"
-                },
-                {
-                    comment_userid:"123",
-                    comment_content:"this article is very interesting!I support it !",
-                    comment_date:"2018-01-24"
-                },
-            ],
+            comitems:[],
+            details:"",
             isShow:true
         }
     },
@@ -90,10 +70,14 @@ export default{
         },
         clickpost:function(postitem){
             this.isShow=false
-            // this.title=postitem.title
-            // this.author=postitem.author
-            // this.content=postitem.content
-            // this.date=postitem.date
+            this.$http.post('http://localhost:3000/detail',{"Author":postitem.author,"Date":postitem.date}).then(response => {
+                console.log(response.data)
+                this.details=response.data;
+                this.comitems=this.details.com;
+            },response => {
+                console.log("error");
+            });
+             
         }
     }
 }

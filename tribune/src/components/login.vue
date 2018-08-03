@@ -92,7 +92,7 @@ input::-webkit-input-placeholder{
     height:30px;
     font-size:18px;
     margin-top:45px;
-    margin-right:44px;
+    margin-right:40px;
     background:none;
     border:none;
     outline:none;
@@ -100,7 +100,7 @@ input::-webkit-input-placeholder{
 .regi_button{
     width:80px;
     height:30px;
-    margin-left:42px;
+    /* margin-left:3px; */
     font-size:18px;
     background:none;
     border:none;

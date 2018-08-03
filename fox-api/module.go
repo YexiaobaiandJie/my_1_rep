@@ -63,3 +63,8 @@ type detail struct{
 	Date    int64 	`json:"date"`
 	Com 	[]detailcom `json:"com"`
 }
+
+type detailpost struct{
+	Author string `json:"author"`
+	Date   int64  `json:"date"`
+}
