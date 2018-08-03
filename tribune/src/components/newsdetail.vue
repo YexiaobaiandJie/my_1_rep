@@ -15,22 +15,17 @@
 </template>
 
 <script>
-import Bus from './bus.js'
 export default{
-    props:['message'],
-    mounted:function(){
-        // console.log("B is running")
-        
-    },
+    
     data(){
         return{
-            message:"",
+            message:"this is the newsdetail",
             title:"",
             author:"",
             content:"",
             date:"",
-            newsurl:""
-
+            newsurl:"",
+            newsid:"12122"
         }
     },
     methods:{
@@ -38,18 +33,25 @@ export default{
             window.location.href=this.newsurl;
         },
         loadnews:function(){
-            // console.log("newsdetail running")
-            // Bus.$on('val',(data)=>{
-            // console.log("bus is running")
-            // console.log(data)
-            // this.title=data.title
-            // this.author=data.authorName
-            // this.date=data.publishDate
-            // this.content=data.summary
-            // this.newsurl=data.url
+            this.newsid=this.$route.query.id
+             this.$http.get('http://localhost:3000/newsd?id='+this.newsid).then(function(res){
+                var data = res.body
+                console.log(data)
+                this.title=data.title
+                this.author=data.authorName
+                this.date=data.publishDate
+                this.content=data.summaryAuto
+                this.newsurl=data.url
+                },function(res){
+                alert("返回新闻数据出错!")
+            })
+            
+            
             // console.log(this.title)
-            console.log(this.message)
         }
+    },
+    mounted:function(){
+        this.loadnews()
     }
 }
 </script>

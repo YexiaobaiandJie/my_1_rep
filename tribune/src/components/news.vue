@@ -4,20 +4,19 @@
             <h2 v-on:click="backnews" class="backnews">新闻>></h2>
         </div>
         <hr />
-        <div v-show="isShow">
+        <!-- <div v-show="isShow"> -->
             <div  v-for="newitem in newitems" class="newstyle">
                 <div class="new-l"  v-on:click="clicknews(newitem)">{{newitem.title}}</div>
                 <div class="new-r">{{newitem.publishDate}}</div>
             </div>
-        </div>
-        <div v-show="!isShow">
-            <h2 class="newstitle">{{title}}</h2>
+        <!-- </div> -->
+        <!-- <div v-show="!isShow"> -->
+            <!-- <h2 class="newstitle">{{title}}</h2>
             <h3 class="newsauthor">{{author}}</h3>
             <div class="newscontent"><p>{{content}}</p></div>
             <div class="per" v-on:click="openh">查看全文</div>
-            <div class="newsdate">{{date}}</div>
-            
-        </div>
+            <div class="newsdate">{{date}}</div>   -->
+        <!-- </div> -->
 
 
 
@@ -26,6 +25,7 @@
 
 
 <script>
+
 export default{
     mounted:function(){
         this.loadnews()
@@ -51,12 +51,13 @@ export default{
             });
         },
         clicknews:function(newitem){
-            this.isShow=!this.isShow
-            this.title=newitem.title
-            this.author=newitem.authorName
-            this.date=newitem.publishDate
-            this.content=newitem.summary
-            this.newsurl=newitem.url
+            // this.isShow=!this.isShow
+            // this.title=newitem.title
+            // this.author=newitem.authorName
+            // this.date=newitem.publishDate
+            // this.content=newitem.summary
+            // this.newsurl=newitem.url
+            this.$router.push({path:'/news/newsdetail',query:{id:newitem.id}})
         },
         backnews:function(){
             this.isShow=true

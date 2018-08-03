@@ -7,6 +7,7 @@ import VRouter from 'vue-router'
 import News from './components/news'
 import Postings from './components/postings'
 import Login from './components/login'
+import Newsdetail from './components/newsdetail'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VRouter)
@@ -24,6 +25,10 @@ let router = new VRouter({
     {
       path:'/login',
       component:  Login
+    },
+    {
+      path:'/news/newsdetail',
+      component: Newsdetail
     }
   ]
 })

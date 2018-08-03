@@ -19,6 +19,7 @@ import HelloWorld from './components/HelloWorld'
 import News from './components/news'
 import Postings from './components/postings'
 import Store from './components/store'
+
 export default {
   name: 'App',
   components: {
