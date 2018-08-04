@@ -46,7 +46,7 @@ func main(){
 	response,_ :=client.Do(reqest)
 	body,err :=ioutil.ReadAll(response.Body)
 	defer response.Body.Close()
-	tick := time.Tick(time.Minute*13)
+	tick := time.Tick(time.Minute*1)
     for _ = range tick {
             reptile(body)
 	}

@@ -34,7 +34,7 @@ func RegisterPage(cq *gin.Context){
 				c1.Insert(&user{Userid:newid,Password:newpwd})
 				c1.Find(bson.M{"userid":newid}).Select(bson.M{"_id":1,"userid":1,"password":1}).All(&getUser)
 				cq.String(http.StatusOK,"注册成功")
-				cq.JSON(200,getUser[0].Id)
+				// cq.JSON(200,getUser[0].Id)
 			}
 		}
 	}
