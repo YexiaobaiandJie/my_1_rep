@@ -11,6 +11,7 @@ import Newsdetail from './components/newsdetail'
 import Postdetail from './components/postdetail'
 import Register from './components/register'
 import Publish from './components/publish'
+import CommentPublish from './components/comment'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VRouter)
@@ -44,6 +45,10 @@ let router = new VRouter({
     {
       path:'/postings/publish',
       component: Publish
+    },
+    {
+      path:'/comment',
+      component: CommentPublish
     }
   ]
 })

@@ -13,9 +13,16 @@
             <hr />
             <div class="comment" >
                 <div>
-                <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
+                <div class="total_comment">{{comemntarea}}:共有{{comment_count}}条评论</div>
+                <button class="comment_btn" v-bind:class="{incomment:isincomment}" v-on:click="topublishcomment">comment</button>
                 </div>
                 <hr />
+                <div v-show="tocomment">
+                    <div>
+                        <textarea id="comment_text" class="comment_publish_text"></textarea>
+                    </div>
+                    <button class="comment_publish_btn" v-on:click="backtopostdetail();publish_comment()">publish</button>
+                </div>
                 <div v-for="comitem in comitems">
                     <div class="comment_userid">{{comitem.userid}}</div>
                     <div class="comment_content">{{comitem.com}}</div>
@@ -28,7 +35,7 @@
 
 
 <script>
-
+import Store from './store'
 export default{
     mounted:function(){
         this.loadpostings()
@@ -46,7 +53,9 @@ export default{
             details:"",
             isShow:true,
             comment_count:0,
-            comemntarea:"评论区"
+            comemntarea:"评论区",
+            tocomment:false,
+            isincomment:false
         }
     },
     methods:{
@@ -70,6 +79,21 @@ export default{
         },
         backtopost:function(){
             this.isShow=true
+        },
+        topublishcomment:function(){
+            // this.$router.push({path:'/comment',query:{Author:this.author,Date:this.date}})
+            this.tocomment=true
+            this.isincomment=true
+        },
+        backtopostdetail:function(){
+            this.tocomment=false
+            this.isincomment=false
+        },
+        publish_comment:function(){
+            var token=Store.gettoken()
+            var area=document.getElementById("comment_text")
+            var comment_content=area.value
+            this.$http.post('http://localhost:3000/comment',{Author:this.author,Date:this.date,Token:token,Com:comment_content})
         }
     }
 }
@@ -171,5 +195,31 @@ export default{
 .comment_content{
     padding-left:2%;
     padding-right:2%;
+}
+.total_comment{
+    float: left;
+}
+.comment_btn{
+    margin-left:20px;
+    font-size:15px;
+}
+.comment_publish_text{
+    float: left;
+    width:90%;
+    height:50px;
+    font-size:17px;
+}
+.comment_publish_btn{
+    margin-left:10px;
+    height:55px;
+    border:none;
+    border-radius: 2em;
+    outline:none;
+}
+.incomment{
+    background-color:#0ff;
+    color:aliceblue;
+    border:none;
+    outline:none;
 }
 </style>
