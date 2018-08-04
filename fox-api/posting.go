@@ -4,7 +4,7 @@ import(
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"time"
-	//"strconv"
+	"strconv"
 	"github.com/gin-gonic/gin"
 )
 
@@ -80,14 +80,16 @@ func DetailPage(cq *gin.Context){
 	var Posting []posting
 	var Comment []detailcom
 	var Detail  detail
-	var Detailpost detailpost
-	if cq.ShouldBind(&Detailpost) == nil{
-		author :=Detailpost.Author
-		date :=Detailpost.Date
-		if author=="" || date==0{
+	//var Detailpost detailpost
+	// if cq.ShouldBind(&Detailpost) == nil{
+	// 	author :=Detailpost.Author
+	// 	date :=Detailpost.Date
+		author :=cq.Query("Author")
+		date :=cq.Query("Date")
+		if author=="" || date==""{
 			cq.String(200,"author or date should not be empty")
 		}else{
-			date2:=date
+			date2,err:=strconv.ParseInt(date,10,64)
 			session,err :=mgo.Dial("localhost")
 			if err !=nil{
 				panic(err)
@@ -97,7 +99,7 @@ func DetailPage(cq *gin.Context){
 			c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
 			if len(Posting)!=0{
 				c1 :=db.C("comments")
-				c1.Find(bson.M{"author":author,"date":date2}).Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
+				c1.Find(bson.M{"author":author,"date":date2}).Sort("-Date").Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
 				Detail.Title=Posting[0].Title
 				Detail.Author=Posting[0].Author
 				Detail.Content=Posting[0].Content
@@ -109,7 +111,7 @@ func DetailPage(cq *gin.Context){
 				cq.String(200,"找不到相应帖子，请确认作者和时间")
 			}
 		}
-	}
+	// }
 }
 
 

@@ -23,6 +23,7 @@
                     </div>
                     <button class="comment_publish_btn" v-on:click="backtopostdetail();publish_comment()">publish</button>
                 </div>
+                <hr />
                 <div v-for="comitem in comitems">
                     <div class="comment_userid">{{comitem.userid}}</div>
                     <div class="comment_content">{{comitem.com}}</div>
@@ -60,14 +61,20 @@ export default{
     },
     methods:{
         loadpostings:function(){
+            console.log("loadposting is running")
             this.author=this.$route.query.Author
             this.date=this.$route.query.Date
-            this.$http.post('http://localhost:3000/detail',{"Author":this.author,"Date":this.date}).then(response => {
+            // console.log(this.author)
+            // console.log(this.date)
+            this.$http.get('http://localhost:3000/postings/postdetail?Author='+this.author+'&Date='+this.date).then(function(response){
                 //console.log(response.data)
-                this.details=response.data;
+                this.details=response.body;
                 this.comitems=this.details.com;
                 this.comment_count=this.details.comcount
-            },response => {
+                console.log("there is running")
+                
+                console.log(response.body)
+            },function(response){
                 console.log("error");
             }); 
         },
@@ -94,6 +101,7 @@ export default{
             var area=document.getElementById("comment_text")
             var comment_content=area.value
             this.$http.post('http://localhost:3000/comment',{Author:this.author,Date:this.date,Token:token,Com:comment_content})
+            window.location.reload()
         }
     }
 }

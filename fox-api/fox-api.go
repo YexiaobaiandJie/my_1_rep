@@ -22,7 +22,7 @@ func main(){
 	r.POST("/register",RegisterPage)
 	r.POST("/publish",PublishPage)
 	r.GET("/postings",PostingPage)
-	r.POST("/detail",DetailPage)
+	r.GET("/postings/postdetail",DetailPage)
 	r.POST("/comment",CommentPage)
 	// r.POST("/getcomment",GetComPage)
 	r.Run(":3000")

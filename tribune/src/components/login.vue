@@ -33,6 +33,7 @@ export default{
     mounted:function(){
             this.checktoken()
             this.checkstatus()
+            this.userid=Store.getuserid()
     },
     methods:{
         logout:function(){
