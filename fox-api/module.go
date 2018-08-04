@@ -80,3 +80,10 @@ type token_title_con struct{
 	Title string `json:"title"`
 	Content string `json:"content"`
 }
+
+type author_date_com_token struct{
+	Author string `json:"author"`
+	Date   int64   `json:"date"`
+	Com    string  `json:"com"`
+	Token  bson.ObjectId `bson:"_id"`
+}
