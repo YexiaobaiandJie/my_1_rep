@@ -12,50 +12,48 @@ import(
 func PublishPage(cq *gin.Context){
 	var User []user
 	var Posting posting
-	temp :=cq.Query("token")
-	if temp ==""{
-		cq.String(200,"token should not be empty")
-	}else if len(temp)==24{
-		token:=bson.ObjectIdHex(temp)
-		session,err :=mgo.Dial("localhost")
-		if err !=nil{
-			panic(err)
-		}
-		db :=session.DB("userinfo") 
-		c :=db.C("usertable")
-		c.Find(bson.M{"_id":token}).All(&User)
-		if len(User) !=0{
-			//当token正确时，发布帖子
-			cq.String(200,"token正确，进入发布状态->")
-			//将帖子存入数据库中
-			title :=cq.Query("title")
-			content :=cq.Query("content")
-			if(title=="" || content==""){
-				cq.String(200,"题目或内容未正确输入，发布失败")
-			}else{
-				dtime :=time.Now()
-				date := dtime.Unix()
-				Posting.Title=title
-				Posting.Author=User[0].Userid
-				Posting.Content=content
-				Posting.Date=date
-				session1,err1 :=mgo.Dial("localhost")
-				if err1 !=nil{
-					panic(err1)
-				}
-				db1 :=session1.DB("userinfo")
-				c1 :=db1.C("postings")
-				c1.Insert(Posting)
-				cq.String(200,"发布成功")
+	var Token_title_con token_title_con
+	if cq.ShouldBind(&Token_title_con) == nil{
+		token :=Token_title_con.Token
+			// token:=bson.ObjectIdHex(temp)
+			session,err :=mgo.Dial("localhost")
+			if err !=nil{
+				panic(err)
 			}
-		}else{
-			//当token错误时，发布失败
-			cq.String(200,"token错误，发布失败")
-		}
-	}else{
-		cq.String(200,"token残缺,发布失败")
+			db :=session.DB("userinfo") 
+			c :=db.C("usertable")
+			c.Find(bson.M{"_id":token}).All(&User)
+			if len(User) !=0{
+				//当token正确时，发布帖子
+				cq.String(200,"token正确，进入发布状态->")
+				//将帖子存入数据库中
+				// title :=cq.Query("title")
+				// content :=cq.Query("content")
+				title:=Token_title_con.Title
+				content :=Token_title_con.Content
+				if(title=="" || content==""){
+					cq.String(200,"题目或内容未正确输入，发布失败")
+				}else{
+					dtime :=time.Now()
+					date := dtime.Unix()
+					Posting.Title=title
+					Posting.Author=User[0].Userid
+					Posting.Content=content
+					Posting.Date=date
+					session1,err1 :=mgo.Dial("localhost")
+					if err1 !=nil{
+						panic(err1)
+					}
+					db1 :=session1.DB("userinfo")
+					c1 :=db1.C("postings")
+					c1.Insert(Posting)
+					cq.String(200,"发布成功")
+				}
+			}else{
+				//当token错误时，发布失败
+				cq.String(200,"token错误，发布失败")
+			}
 	}
-	
 }
 
 //查看所有帖子 展示帖子概况

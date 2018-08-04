@@ -12,7 +12,9 @@
             <div class="postdate">date:{{this.details.date}}</div>
             <hr />
             <div class="comment" >
+                <div>
                 <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
+                </div>
                 <hr />
                 <div v-for="comitem in comitems">
                     <div class="comment_userid">{{comitem.userid}}</div>

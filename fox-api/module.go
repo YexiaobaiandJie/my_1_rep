@@ -74,3 +74,9 @@ type tokenid struct{
 	Userid string `json:"userid"`
 	Token  bson.ObjectId 	`bson:"_id"`
 }
+
+type token_title_con struct{
+	Token bson.ObjectId `bson:"_id"`
+	Title string `json:"title"`
+	Content string `json:"content"`
+}

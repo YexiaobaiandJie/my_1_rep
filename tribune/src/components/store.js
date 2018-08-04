@@ -4,13 +4,13 @@ const STATUS_KEY='islogin'
 
 export default{
     savetoken :function(token){
-        window.localStorage.setItem(TOKEN_KEY,JSON.stringify(token))
+        window.localStorage.setItem(TOKEN_KEY,token)
     },
     gettoken :function (){
         return window.localStorage.getItem(TOKEN_KEY)
     },
     saveuseid :function(userid){
-        window.localStorage.setItem(USERID_KEY,JSON.stringify(userid))
+        window.localStorage.setItem(USERID_KEY,userid)
     },
     getuserid :function (){
         return window.localStorage.getItem(USERID_KEY)
