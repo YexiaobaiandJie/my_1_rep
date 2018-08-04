@@ -42,7 +42,7 @@ export default{
 }
 </script>
 
-<style>
+<style scoped>
 .content{
     text-align: center;
     margin-top:10%;
@@ -87,6 +87,7 @@ input::-webkit-input-placeholder{
     color:#cfcfcf;
     border-radius: 0.6em;
     font-size:15px;
+    outline:none;
 }
 .onbtn{
     color:black;

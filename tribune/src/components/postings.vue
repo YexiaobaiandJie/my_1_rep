@@ -4,31 +4,12 @@
             <h2 v-on:click="backtopost">论帖-author</h2>
         </div>
         <hr />
-        <!-- <div v-show="isShow"> -->
             <div  v-for="postitem in postitems" class="poststyle">
                 <div class="post-l" v-on:click="clickpost(postitem)">{{postitem.title}}</div>
                 <div class="post-r">{{postitem.author}}</div>
             </div>
-            <button class="btnpublish" v-bind:class="{clickbtn:ison}" v-on:mouseover="onbtn" v-on:mouseout="gobtn">发帖</button>
-        <!-- </div> -->
-
-        <!-- <div v-show="!isShow">
-            <h3 class="posttitle">{{this.details.title}}</h3>
-            <h3 class="postauthor">author:{{this.details.author}}</h3>
-            <div class="postcontent"><p>{{this.details.content}}</p></div>
-            <div class="postdate">date:{{this.details.date}}</div>
-            <hr />
-            <div class="comment" >
-                <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
-                <hr />
-                <div v-for="comitem in comitems">
-                    <div class="comment_userid">{{comitem.userid}}</div>
-                    <div class="comment_content">{{comitem.com}}</div>
-                    <div class="comment_date">{{comitem.time}}</div>
-                    <hr />
-                </div>
-            </div>
-        </div> -->
+            <button class="btnpublish" v-on:click="topublish" v-bind:class="{clickbtn:ison}" v-on:mouseover="onbtn" v-on:mouseout="gobtn">发帖</button>
+        
     </div>
 </template>
 
@@ -73,6 +54,9 @@ export default{
         },
         backtopost:function(){
             this.isShow=true
+        },
+        topublish:function(){
+            this.$router.push({path:'/postings/publish'})
         }
     }
 }
@@ -136,6 +120,7 @@ export default{
     border:none;
     color:aliceblue;
     transition:0.7s all;
+    outline:none;
 }
 .clickbtn{
     background-color:#ff4500;

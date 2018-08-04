@@ -10,6 +10,7 @@ import Login from './components/login'
 import Newsdetail from './components/newsdetail'
 import Postdetail from './components/postdetail'
 import Register from './components/register'
+import Publish from './components/publish'
 Vue.config.productionTip = false
 Vue.use(VueResource)
 Vue.use(VRouter)
@@ -39,6 +40,10 @@ let router = new VRouter({
     {
       path:'/login/register',
       component: Register
+    },
+    {
+      path:'/postings/publish',
+      component: Publish
     }
   ]
 })
