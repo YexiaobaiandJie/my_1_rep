@@ -24,6 +24,7 @@ func main(){
 	r.GET("/postings",PostingPage)
 	r.GET("/postings/postdetail",DetailPage)
 	r.POST("/comment",CommentPage)
+	r.POST("/news/comment",NewsComment)
 	// r.POST("/getcomment",GetComPage)
 	r.Run(":3000")
 }

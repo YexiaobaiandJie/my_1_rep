@@ -93,3 +93,21 @@ type author_date_com_token struct{
 	Com    string  `json:"com"`
 	Token  bson.ObjectId `bson:"_id"`
 }
+
+type news_comment struct{
+	Newsid int `json:"newsid"`
+	Com    string `json:"com"`
+	Token  bson.ObjectId `bson:"_id"`
+}
+
+type news_comment_save struct{
+	Newsid int `json:"newsid"`
+	Com    string `json:"com"`
+	Userid string `json:"userid"`
+	Date   string `json:"date"`
+}
+
+type newsdetail struct{
+	Newsinfo Info `json:"newsinfo"`
+	NewsComment []news_comment_save  `json:"newscomment"`
+}
