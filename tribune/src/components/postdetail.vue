@@ -9,7 +9,7 @@
             <h3 class="posttitle">{{this.details.title}}</h3>
             <h3 class="postauthor">author:{{this.details.author}}</h3>
             <div class="postcontent"><p>{{this.details.content}}</p></div>
-            <div class="postdate">date:{{this.details.date}}</div>
+            <div class="postdate">date:{{this.localdate}}</div>
             <hr />
             <div class="comment" >
                 <div>
@@ -56,7 +56,8 @@ export default{
             comment_count:0,
             comemntarea:"评论区",
             tocomment:false,
-            isincomment:false
+            isincomment:false,
+            localdate:""
         }
     },
     methods:{
@@ -68,6 +69,7 @@ export default{
                 this.details=response.body;
                 this.comitems=this.details.com;
                 this.comment_count=this.details.comcount
+                this.localdate= this.timestampToTime(this.details.date)
             },function(response){
                 console.log("error");
             }); 
@@ -99,7 +101,17 @@ export default{
             var comment_content=area.value
             this.$http.post('http://localhost:3000/comment',{Author:this.author,Date:this.date,Token:token,Com:comment_content})
             this.$router.go()
-        }
+        },
+        timestampToTime:function (timestamp)  {
+            var date = new Date(timestamp * 1000);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = date.getDate() + ' ';
+            var h = date.getHours() + ':';
+            var m = date.getMinutes() + ':';
+            var s = date.getSeconds();
+            return Y+M+D+h+m+s;
+    }
     }
 }
 </script>
