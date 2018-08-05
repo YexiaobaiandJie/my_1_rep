@@ -110,4 +110,5 @@ type news_comment_save struct{
 type newsdetail struct{
 	Newsinfo Info `json:"newsinfo"`
 	NewsComment []news_comment_save  `json:"newscomment"`
+	Comcount int `json:"comcount"`
 }

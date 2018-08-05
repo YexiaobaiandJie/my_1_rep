@@ -79,6 +79,7 @@ func NewsdetailPage(cq *gin.Context){
 	c2.Find(bson.M{"newsid":id}).Sort("-date").All(&News_comment)
 	Newsdetail.Newsinfo=infos
 	Newsdetail.NewsComment=News_comment
+	Newsdetail.Comcount=len(News_comment)
 	cq.JSON(200,Newsdetail)
 }
 
