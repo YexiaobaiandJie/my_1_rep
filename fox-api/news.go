@@ -1,7 +1,7 @@
 package main
 
 import(
-	"net/http"
+	//"net/http"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"strconv"
@@ -16,7 +16,7 @@ func Index(cq *gin.Context){
 	//cq.Header("Access-Control-Allow-Origin", "*")
 	temp :=cq.Query("token")
 	if temp==""{
-		cq.String(http.StatusOK,"token should not be empty")
+		cq.JSON(400,"token should not be empty")
 	}else if len(temp)==24{
 		token:=bson.ObjectIdHex(temp)
 		session1,err :=mgo.Dial("localhost")
@@ -29,7 +29,7 @@ func Index(cq *gin.Context){
 		if len(User) !=0{
 			value1 :=cq.Query("pagesize")
 			if value1==""{
-				cq.String(http.StatusOK,"pagesize should not be empty")
+				cq.JSON(400,"pagesize should not be empty")
 			}else{
 				value2,err:=strconv.Atoi(value1)
 				if err !=nil{
@@ -49,10 +49,10 @@ func Index(cq *gin.Context){
 				cq.JSON(200,infos)
 			}
 		}else{
-			cq.String(http.StatusOK,"身份验证错误")
+			cq.JSON(400,"身份验证错误")
 		}
 	}else{
-		cq.String(200,"token 残缺")
+		cq.JSON(400,"token 残缺")
 	}
 }
 

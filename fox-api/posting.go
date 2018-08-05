@@ -26,14 +26,14 @@ func PublishPage(cq *gin.Context){
 			c.Find(bson.M{"_id":token}).All(&User)
 			if len(User) !=0{
 				//当token正确时，发布帖子
-				cq.String(200,"token正确，进入发布状态->")
+				cq.JSON(200,"token正确，进入发布状态->")
 				//将帖子存入数据库中
 				// title :=cq.Query("title")
 				// content :=cq.Query("content")
 				title:=Token_title_con.Title
 				content :=Token_title_con.Content
 				if(title=="" || content==""){
-					cq.String(200,"题目或内容未正确输入，发布失败")
+					cq.JSON(400,"题目或内容未正确输入，发布失败")
 				}else{
 					dtime :=time.Now()
 					date := dtime.Unix()
@@ -48,11 +48,11 @@ func PublishPage(cq *gin.Context){
 					db1 :=session1.DB("userinfo")
 					c1 :=db1.C("postings")
 					c1.Insert(Posting)
-					cq.String(200,"发布成功")
+					cq.JSON(200,"发布成功")
 				}
 			}else{
 				//当token错误时，发布失败
-				cq.String(200,"token错误，发布失败")
+				cq.JSON(400,"token错误，发布失败")
 			}
 	}
 }
@@ -71,7 +71,7 @@ func PostingPage(cq *gin.Context){
 	if len(Postshort)!=0{
 			cq.JSON(200,Postshort)
 	}else{
-		cq.String(200,"目前没有任何帖子")
+		cq.JSON(400,"目前没有任何帖子")
 	}
 }
 
@@ -80,6 +80,7 @@ func DetailPage(cq *gin.Context){
 	//根据时间和作者来确定帖子以及评论
 	var Posting []posting
 	var Comment []detailcom
+	//var Comment_ []detailcom_
 	var Detail  detail
 	//var Detailpost detailpost
 	// if cq.ShouldBind(&Detailpost) == nil{
@@ -89,7 +90,7 @@ func DetailPage(cq *gin.Context){
 		date :=cq.Query("Date")
 		
 		if author=="" || date==""{
-			cq.String(200,"author or date should not be empty")
+			cq.JSON(400,"author or date should not be empty")
 		}else{
 			date2,err:=strconv.ParseInt(date,10,64)
 			session,err :=mgo.Dial("localhost")
@@ -101,16 +102,24 @@ func DetailPage(cq *gin.Context){
 			c.Find(bson.M{"author":author,"date":date2}).All(&Posting)
 			if len(Posting)!=0{
 				c1 :=db.C("comments")
-				c1.Find(bson.M{"author":author,"date":date2}).Sort("-Date").Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
+				c1.Find(bson.M{"author":author,"date":date2}).Sort("-time").Select(bson.M{"userid":1,"com":1,"time":1}).All(&Comment)
 				Detail.Title=Posting[0].Title
 				Detail.Author=Posting[0].Author
 				Detail.Content=Posting[0].Content
 				Detail.Date=Posting[0].Date
+				// //转换时间格式
+				
+				// for i :=0;i<len(Comment);i++{
+				// 	Comment_[i].Userid=Comment[i].Userid
+				// 	Comment_[i].Com=Comment[i].Com
+				// 	Comment_[i].Time=time.Unix(Comment[i].Time, 0).Format("2006-01-02 15:04:05")
+				// }
+
 				Detail.Com=Comment
 				Detail.Comcount=len(Comment)
 				cq.JSON(200,Detail)
 			}else{
-				cq.String(200,"找不到相应帖子，请确认作者和时间")
+				cq.JSON(400,"找不到相应帖子，请确认作者和时间")
 			}
 		}
 	// }
@@ -137,7 +146,7 @@ func CommentPage(cq *gin.Context){
 		com :=Author_date_com_token.Com
 		fmt.Println("数据传输成功")
 		if(author=="" || com==""){
-			cq.String(200,"author or date or temp or com should not be empty")
+			cq.JSON(400,"author or date or temp or com should not be empty")
 		}else{
 			session2,err :=mgo.Dial("localhost")
 			if err !=nil{
@@ -160,7 +169,7 @@ func CommentPage(cq *gin.Context){
 				c  :=db.C("usertable")
 				c.Find(bson.M{"_id":token}).One(&User)
 				if User==fake{
-					cq.String(200,"token错误")
+					cq.JSON(400,"token错误")
 				}else{
 						//将评论存入数据库
 						session1,err1 :=mgo.Dial("localhost")
@@ -175,11 +184,11 @@ func CommentPage(cq *gin.Context){
 						Comment.Com=com
 						Comment.Time=timenow
 						c1.Insert(Comment)
-						cq.String(200,"发表评论成功")
+						cq.JSON(200,"发表评论成功")
 						fmt.Println("评论存储成功")
 					}
 			}else{
-				cq.String(200,"不存在对应帖子，请确认作者和时间")
+				cq.JSON(400,"不存在对应帖子，请确认作者和时间")
 			}	
 		}	
 		

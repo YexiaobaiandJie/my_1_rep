@@ -1,7 +1,7 @@
 package main
 
 import(
-	"net/http"
+	
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ func RegisterPage(cq *gin.Context){
 		newid :=user2.Userid
 		newpwd :=user2.Password
 		if newid=="" || newpwd=="" {
-			cq.String(http.StatusOK,"userid or userpwd should not be empty")
+			cq.JSON(400,"userid or userpwd should not be empty")
 		}else{
 			session,err :=mgo.Dial("localhost")
 			if err !=nil{
@@ -29,12 +29,12 @@ func RegisterPage(cq *gin.Context){
 			c1 :=db1.C("usertable")
 			err=c1.Find(bson.M{"userid":newid}).All(&User)
 			if len(User) != 0{
-				cq.String(http.StatusOK,"该id已存在")
+				cq.JSON(400,"该id已存在")
 			}else{
 				c1.Insert(&user{Userid:newid,Password:newpwd})
 				c1.Find(bson.M{"userid":newid}).Select(bson.M{"_id":1,"userid":1,"password":1}).All(&getUser)
-				cq.String(http.StatusOK,"注册成功")
-				// cq.JSON(200,getUser[0].Id)
+				cq.JSON(200,"注册成功")
+				
 			}
 		}
 	}
@@ -53,7 +53,7 @@ func LoginPage(cq *gin.Context){
 		userid :=user2.Userid
 		userpwd :=user2.Password
 		if userid=="" || userpwd=="" {
-			cq.String(http.StatusOK,"userid or userpwd should not be empty")
+			cq.JSON(400,"userid or userpwd should not be empty")
 		}else{
 			session,err :=mgo.Dial("localhost")
 			if err !=nil{
@@ -69,7 +69,7 @@ func LoginPage(cq *gin.Context){
 				Tokenid.Token=getUser[0].Id
 				cq.JSON(200,Tokenid)
 			}else{
-				cq.String(http.StatusOK,"身份验证出错")
+				cq.JSON(400,"身份验证出错")
 			}
 		}
 	}

@@ -56,6 +56,12 @@ type detailcom struct{
 	Time   int64  `json:"time"`
 }
 
+type detailcom_ struct{
+	Userid string `json:"userid"`
+	Com    string `json:"com"`
+	Time   string `json:"time"`
+}
+
 type detail struct{
 	Title   string 	`json:"title"`
 	Author  string 	`json:"author"`
