@@ -14,7 +14,7 @@
     <hr />
     <div>
                 <div>
-                <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
+                <div>{{commentarea}}:共有{{comment_count}}条评论</div>
                 <button>comment</button>
                 </div>
                 <hr />
@@ -50,7 +50,7 @@ export default{
             newsid:"12122",
             comitems:[],
             comment_count:0,
-            comemntarea:"评论区"
+            commentarea:"评论区"
         }
     },
     methods:{
@@ -68,6 +68,7 @@ export default{
                 this.content=data.newsinfo.summaryAuto
                 this.newsurl=data.newsinfo.url
                 this.comitems=data.newscomment
+                this.comment_count=data.comcount
                 },function(res){
                 alert("返回新闻数据出错!")
             })

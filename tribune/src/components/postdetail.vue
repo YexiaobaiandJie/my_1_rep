@@ -27,7 +27,7 @@
                 <div v-for="comitem in comitems">
                     <div class="comment_userid">{{comitem.userid}}</div>
                     <div class="comment_content">{{comitem.com}}</div>
-                    <div class="comment_date">{{comitem.time}}</div>
+                    <div class="comment_date">{{timestampToTime(comitem.time)}}</div>
                     <hr />
                 </div>
             </div>
