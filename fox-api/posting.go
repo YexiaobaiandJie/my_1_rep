@@ -6,6 +6,7 @@ import(
 	"time"
 	"strconv"
 	"github.com/gin-gonic/gin"
+	"fmt"
 )
 
 //PublishPage 发布帖子
@@ -86,6 +87,7 @@ func DetailPage(cq *gin.Context){
 	// 	date :=Detailpost.Date
 		author :=cq.Query("Author")
 		date :=cq.Query("Date")
+		
 		if author=="" || date==""{
 			cq.String(200,"author or date should not be empty")
 		}else{
@@ -126,12 +128,14 @@ func CommentPage(cq *gin.Context){
 	// date :=cq.Query("date")
 	// temp :=cq.Query("token")
 	// com :=cq.Query("com")
+	fmt.Println("收到发布评论请求")
 	var Author_date_com_token author_date_com_token
-	if cq.ShouldBind(&Author_date_com_token) == nil{
+	if err10 :=cq.ShouldBind(&Author_date_com_token);err10 == nil{
 		author :=Author_date_com_token.Author
 		date :=Author_date_com_token.Date
 		token :=Author_date_com_token.Token
 		com :=Author_date_com_token.Com
+		fmt.Println("数据传输成功")
 		if(author=="" || com==""){
 			cq.String(200,"author or date or temp or com should not be empty")
 		}else{
@@ -172,12 +176,16 @@ func CommentPage(cq *gin.Context){
 						Comment.Time=timenow
 						c1.Insert(Comment)
 						cq.String(200,"发表评论成功")
+						fmt.Println("评论存储成功")
 					}
 			}else{
 				cq.String(200,"不存在对应帖子，请确认作者和时间")
 			}	
 		}	
 		
+}else{
+	fmt.Println(err10)
+	fmt.Println("接收数据失败")
 }
 }
 

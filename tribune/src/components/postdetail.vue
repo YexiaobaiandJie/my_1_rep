@@ -61,19 +61,13 @@ export default{
     },
     methods:{
         loadpostings:function(){
-            console.log("loadposting is running")
             this.author=this.$route.query.Author
             this.date=this.$route.query.Date
-            // console.log(this.author)
-            // console.log(this.date)
+            console.log(this.Date)
             this.$http.get('http://localhost:3000/postings/postdetail?Author='+this.author+'&Date='+this.date).then(function(response){
-                //console.log(response.data)
                 this.details=response.body;
                 this.comitems=this.details.com;
                 this.comment_count=this.details.comcount
-                console.log("there is running")
-                
-                console.log(response.body)
             },function(response){
                 console.log("error");
             }); 
@@ -97,11 +91,14 @@ export default{
             this.isincomment=false
         },
         publish_comment:function(){
+            if(typeof(this.date)!="int"){   //如果date类型不是int64
+                this.date=parseInt(this.date)
+            }
             var token=Store.gettoken()
             var area=document.getElementById("comment_text")
             var comment_content=area.value
             this.$http.post('http://localhost:3000/comment',{Author:this.author,Date:this.date,Token:token,Com:comment_content})
-            window.location.reload()
+            this.$router.go()
         }
     }
 }
