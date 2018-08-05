@@ -11,10 +11,32 @@
         <div class="per" v-on:click="openh">查看全文</div>
         <div class="newsdate">{{date}}</div>
     </div>     
+    <hr />
+    <div>
+                <div>
+                <div>{{comemntarea}}:共有{{comment_count}}条评论</div>
+                <button>comment</button>
+                </div>
+                <hr />
+                <div>
+                    <div>
+                        <textarea id="comment_text"></textarea>
+                    </div>
+                    <button v-on:click="publish_comment">publish</button>
+                </div>
+                <hr />
+                <div v-for="comitem in comitems">
+                    <div>{{comitem.userid}}</div>
+                    <div>{{comitem.com}}</div>
+                    <div>{{comitem.date}}</div>
+                    <hr />
+                </div>
+            </div>
 </div>  
 </template>
 
 <script>
+import Store from './store'
 export default{
     
     data(){
@@ -25,7 +47,10 @@ export default{
             content:"",
             date:"",
             newsurl:"",
-            newsid:"12122"
+            newsid:"12122",
+            comitems:[],
+            comment_count:0,
+            comemntarea:"评论区"
         }
     },
     methods:{
@@ -37,17 +62,31 @@ export default{
              this.$http.get('http://localhost:3000/newsd?id='+this.newsid).then(function(res){
                 var data = res.body
                 console.log(data)
-                this.title=data.title
-                this.author=data.authorName
-                this.date=data.publishDate
-                this.content=data.summaryAuto
-                this.newsurl=data.url
+                this.title=data.newsinfo.title
+                this.author=data.newsinfo.authorName
+                this.date=data.newsinfo.publishDate
+                this.content=data.newsinfo.summaryAuto
+                this.newsurl=data.newsinfo.url
+                this.comitems=data.newscomment
                 },function(res){
                 alert("返回新闻数据出错!")
             })
             
             
             // console.log(this.title)
+        },
+        publish_comment:function(){
+            if(typeof(this.newsid)!="int"){   //如果date类型不是int
+                this.newsid=parseInt(this.newsid)
+            }
+            var token = Store.gettoken()
+            var newsid = this.newsid
+            var area=document.getElementById("comment_text")
+            var comment_content=area.value
+            this.$http.post('http://localhost:3000/news/comment',{Newsid:newsid,Token:token,Com:comment_content})
+            
+            console.log("评论函数运行完毕")
+            this.$router.go()
         }
     },
     mounted:function(){
