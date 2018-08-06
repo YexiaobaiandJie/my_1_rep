@@ -10,25 +10,22 @@
         <div class="newscontent">{{content}}</div>
         <div class="per" v-on:click="openh">查看全文</div>
         <div class="newsdate">{{date}}</div>
-    </div>     
-    <hr />
-    <div>
-                <div>
-                <div>{{commentarea}}:共有{{comment_count}}条评论</div>
-                <button>comment</button>
-                </div>
+    </div> 
+    <br />    
+            <div class="newscomment_content">
+                <div  class="newscommetn_title">{{commentarea}}:共有{{comment_count}}条评论</div>
                 <hr />
                 <div>
                     <div>
-                        <textarea id="comment_text"></textarea>
+                        <textarea class="newscomment_text" id="comment_text"></textarea>
                     </div>
-                    <button v-on:click="publish_comment">publish</button>
+                    <button class="newscomment_publish" v-on:click="publish_comment">publish</button>
                 </div>
                 <hr />
                 <div v-for="comitem in comitems">
-                    <div>{{comitem.userid}}</div>
-                    <div>{{comitem.com}}</div>
-                    <div>{{comitem.date}}</div>
+                    <div class="newscomment_userid">{{comitem.userid}}</div>
+                    <div class="newscomment_com">{{comitem.com}}</div>
+                    <div class="newscomment_date">{{comitem.date}}</div>
                     <hr />
                 </div>
             </div>
@@ -135,5 +132,35 @@ export default{
     cursor: pointer;
     width:8%;
     float:left;
+}
+.newscomment_content{
+    width:80%;
+    margin-left:10%;
+}
+.newscommetn_title{
+    padding-top:20px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.newscomment_text{
+    width:90%;
+    height: 50px;
+    float: left;
+    margin-left:2%;
+}
+.newscomment_publish{
+    margin-left:10px;
+    height:55px;
+}
+.newscomment_date{
+    text-align:right;
+    padding-right:1%;
+}
+.newscomment_userid{
+    text-align:left;
+    padding-left:1%;
+}
+.newscomment_com{
+    padding-left:2%;
+    padding-right:2%;
 }
 </style>
