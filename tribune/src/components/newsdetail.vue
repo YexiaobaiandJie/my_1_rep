@@ -148,8 +148,11 @@ export default{
     margin-left:2%;
 }
 .newscomment_publish{
+    width:5%;
     margin-left:10px;
     height:55px;
+    font-size: 0.8em;
+    text-align: center;
 }
 .newscomment_date{
     text-align:right;
