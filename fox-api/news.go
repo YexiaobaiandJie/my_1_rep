@@ -91,29 +91,33 @@ func NewsComment (cq *gin.Context) {
 		newsid := newscomment.Newsid
 		newscom := newscomment.Com
 		token := newscomment.Token
-		//根据token获得评论用户的用户id
-		session,err := mgo.Dial("localhost")
-		if err != nil {
-			panic(err)
+		if newscom == "" {
+			cq.JSON(400,"comment should not be empty")
+		}else{
+			//根据token获得评论用户的用户id
+			session,err := mgo.Dial("localhost")
+			if err != nil {
+				panic(err)
+			}
+			db := session.DB("userinfo")
+			c := db.C("usertable")
+			c.Find(bson.M{"_id":token}).All(&User)
+			if len(User) == 0 {  //如果没有找到对应用户
+				cq.JSON(400,"token is wrong")
+			} else {
+				userid := User[0].Userid
+				db2 := session.DB("foxinfo")
+				c2  := db2.C("newscomment")
+				//获得当前时间，为防止之后在前端无法转换回通用格式
+				//时间使用字符串形式存入数据库
+				date:=time.Now().Format("2006-01-02 15:04:05")
+				c2.Insert(&news_comment_save{Newsid:newsid,Com:newscom,Userid:userid,Date:date})
+				cq.JSON(200,"新闻评论存储成功")
+			}
 		}
-		db := session.DB("userinfo")
-		c := db.C("usertable")
-		c.Find(bson.M{"_id":token}).All(&User)
-		if len(User) == 0 {  //如果没有找到对应用户
-			cq.JSON(400,"token is wrong")
-		} else {
-			userid := User[0].Userid
-			db2 := session.DB("foxinfo")
-			c2  := db2.C("newscomment")
-			//获得当前时间，为防止之后在前端无法转换回通用格式
-			//时间使用字符串形式存入数据库
-			date:=time.Now().Format("2006-01-02 15:04:05")
-			c2.Insert(&news_comment_save{Newsid:newsid,Com:newscom,Userid:userid,Date:date})
-			cq.JSON(200,"新闻评论存储成功")
-		}
-
 	}else{
-		fmt.Println(err10)
-		fmt.Println("未获得数据")
-	}
+			fmt.Println(err10)
+			fmt.Println("未获得数据")
+			}
 }
+		
